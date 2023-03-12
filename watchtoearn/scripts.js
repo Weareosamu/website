@@ -13,8 +13,7 @@ const firebaseConfig = {
   measurementId: "G-L809K7DPGK"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
 
 /////////////////////////////////////////////
 
@@ -54,7 +53,12 @@ function updateTimer() {
 ////////////////////////////////////////////////////////////////
 
 function submitHandler(event) {
+  
   console.log(firebase);
+  
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+  
   event.preventDefault();
 
   // Authenticate anonymously
