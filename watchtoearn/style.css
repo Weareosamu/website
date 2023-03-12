@@ -69,17 +69,5 @@ p {
   left: 0;
   background-color: #FF69B4; /* change the background color to pink */
   padding: 10px; /* add padding to create some space around the content */
-  border-top-left-radius: 15px; /* round the top-left corner */
-  border-bottom-right-radius: 15px; /* round the bottom-right corner */
+  border-radius: 0 15px 15px 0; /* round the top-right and bottom-right corners */
 }
-
-#tokenDisplay span {
-  display: inline-block;
-  font-size: 24px;
-  margin-right: 5px;
-  background-color: #FFF; /* add a white background to the span */
-  padding: 5px 10px; /* add padding to create some space around the content */
-  border-top-left-radius: 15px; /* round the top-left corner of the span */
-  border-bottom-right-radius: 15px; /* round the bottom-right corner of the span */
-}
-
