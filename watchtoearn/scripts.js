@@ -35,18 +35,23 @@ function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
 
-  // Format the time into minutes and seconds
-  let minutes = Math.floor(elapsedTime / 60000);
+  // Format the time into hours, minutes, and seconds
+  let hours = Math.floor(elapsedTime / 3600000);
+  let minutes = Math.floor((elapsedTime % 3600000) / 60000);
   let seconds = Math.floor((elapsedTime % 60000) / 1000);
 
-  // Add leading zeros to seconds if necessary
+  // Add leading zeros to minutes and seconds if necessary
+  if (minutes < 10) {
+    minutes = '0' + minutes;
+  }
   if (seconds < 10) {
     seconds = '0' + seconds;
   }
 
   // Update the timer display
-  timer.textContent = `${minutes}:${seconds}`;
+  timer.textContent = `${hours}:${minutes}:${seconds}`;
 }
+
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
