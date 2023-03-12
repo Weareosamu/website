@@ -40,7 +40,7 @@ const timer = document.querySelector('#timer');
 
 // Extract the wallet parameter from the URL
 const params = new URLSearchParams(window.location.search);
-const walletParam = params.get('wallet');
+const walletParam = urlParams.get("wallet");
 
 // Set the value of the wallet input field
 const walletInput = document.querySelector('#wallet');
@@ -95,8 +95,6 @@ function updateTimer() {
 
     // Update the token count in the Firebase database using transaction()
 const wallet = walletParam; // Use the wallet parameter from the URL
-    console.log(' ${wallet} ');
-    
 const tokenRef = database.ref('users/' + wallet + '/token');
 tokenRef.transaction(function(currentTokenCount) {
   if (currentTokenCount === null || currentTokenCount === undefined) {
