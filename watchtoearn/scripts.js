@@ -15,6 +15,13 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+// Sign in anonymously
+firebase.auth().signInAnonymously().then(() => {
+  console.log('User signed in anonymously');
+}).catch((error) => {
+  console.error('Error signing in anonymously:', error);
+});
+
 /////////////////////////////////////////////
 
 // Get a reference to the database service
