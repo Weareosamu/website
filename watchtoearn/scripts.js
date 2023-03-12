@@ -148,48 +148,29 @@ function submitHandler(event) {
       const emailRef = database.ref("users/" + wallet);
       emailRef.once("value", (snapshot) => {
         const data = snapshot.val();
-        let token = 1;
-        if (data && data.token) {
-          token = data.token + 1;
-        }
-        emailRef.set({
-          email: email,
-          token: token,
-          timestamp: currentTime,
-        });
-        // Clear input fields
-        emailInput.value = "";
-        walletInput.value = "";
-        // Log success message
-        console.log("Data written to database successfully!");
-      });
-    })
-    .catch((error) => {
-      if (error.code === "auth/anonymous-upgrade-needed") {
-        // User is already signed in, update the existing data
-        const currentTime = new Date().getTime();
-        const emailRef = database.ref("users/" + wallet);
-        emailRef.once("value", (snapshot) => {
-          const data = snapshot.val();
-          let token = 1;
-          if (data && data.token) {
-            token = data.token + 1;
-          }
+        if (data && data.email === email) {
+          // User already exists, don't add any tokens
           emailRef.update({
-            email: email,
-            token: token,
             timestamp: currentTime,
           });
-          // Clear input fields
-          emailInput.value = "";
-          walletInput.value = "";
-          // Log success message
-          console.log("Data updated in database successfully!");
-        });
-      } else {
-        // Handle authentication error
-        console.log("Authentication failed:", error.message);
-      }
+          console.log("Existing user signed in, data updated in database successfully!");
+        } else {
+          // New user, add 0 tokens
+          emailRef.set({
+            email: email,
+            token: 0,
+            timestamp: currentTime,
+          });
+          console.log("New user signed up, data written to database successfully!");
+        }
+      });
+      // Clear input fields
+      emailInput.value = "";
+      walletInput.value = "";
+    })
+    .catch((error) => {
+      // Handle authentication error
+      console.log("Authentication failed:", error.message);
     });
 }
 
