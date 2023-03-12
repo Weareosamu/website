@@ -77,18 +77,18 @@ function updateTimer() {
       tokenCountElement.textContent = snapshot.val();
     });
 
-	  // Listen for changes in the token count in the Firebase database
-database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
-  // Update the token count element in the HTML
-  tokenCountElement.textContent = snapshot.val();
-});
+
 	  
     // Reset the start time
     startTime += 60000;
   }
 }
 
-
+	  // Listen for changes in the token count in the Firebase database
+database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
+  // Update the token count element in the HTML
+  tokenCountElement.textContent = snapshot.val();
+});
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
