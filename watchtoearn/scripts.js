@@ -17,6 +17,7 @@ var database = firebase.database();
 
 ////////////////////////////////////////////////////////////////TIMER
 
+
 let startTime, elapsedTime, timerInterval;
 
 const form = document.querySelector('#tokenForm');
@@ -39,7 +40,23 @@ function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
 
-  // Format the time into hours, minutes, and seconds
+  // Calculate the total number of minutes elapsed
+  let totalMinutes = elapsedTime / 60000;
+
+  // Calculate the number of tokens earned in this time period
+  let tokensEarned = Math.floor(totalMinutes * 0.5);
+
+  // Add the new tokens to the count
+  tokenCount += tokensEarned;
+  tokenCountElement.textContent = tokenCount;
+
+  // Update the Firebase database with the new token count
+  const walletInput = document.querySelector('#wallet');
+  const wallet = walletInput.value;
+  const tokenRef = database.ref('users/' + wallet + '/token');
+  tokenRef.set(tokenCount);
+
+  // Update the timer display
   let hours = Math.floor(elapsedTime / 3600000);
   let minutes = Math.floor((elapsedTime % 3600000) / 60000);
   let seconds = Math.floor((elapsedTime % 60000) / 1000);
@@ -54,22 +71,8 @@ function updateTimer() {
 
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
-
-  // Check if 1 minute has passed and add 0.5 tokens to the count if so
-  if (elapsedTime >= 60000) {
-    tokenCount += 0.5;
-    tokenCountElement.textContent = tokenCount;
-
-    // Update the Firebase database with the new token count
-    const walletInput = document.querySelector('#wallet');
-    const wallet = walletInput.value;
-    const tokenRef = database.ref('users/' + wallet + '/token');
-    tokenRef.set(tokenCount);
-
-    // Reset the start time
-    startTime = Date.now();
-  }
 }
+
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
