@@ -63,6 +63,10 @@ const wallet = walletInput.value;
 if (email === '' || wallet === '') {
 return;
 }
+
+// Authenticate anonymously
+firebase.auth().signInAnonymously()
+.then(() => {
   // Check if data exists in database under user's wallet ID
   const emailRef = database.ref('users/' + wallet);
   emailRef.once('value')
@@ -96,12 +100,8 @@ return;
   // Handle authentication error
   console.log("Authentication failed:", error.message);
 });
-}  
-  
-
-// Authenticate anonymously
-firebase.auth().signInAnonymously()
-.then(() => {
+ 
+}
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
