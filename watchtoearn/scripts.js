@@ -16,6 +16,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
 ////////////////////////////////////////////////////////////////TIMER
+let startTime, elapsedTime, timerInterval;
 
 function updateTimer() {
   // Get the elapsed time
@@ -64,7 +65,8 @@ function updateTimer() {
 function submitHandler(event) {
 event.preventDefault();
 
-
+// Get the start time
+  startTime = Date.now();
 
 // Start the timer interval
 	timerInterval = setInterval(updateTimer, 1000);
