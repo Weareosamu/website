@@ -54,7 +54,7 @@ let tokenCountElement = document.getElementById('tokenCount');
 function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
-
+ displayTokenCount(wallet);
   // Format the time into hours, minutes, and seconds
   let hours = Math.floor(elapsedTime / 3600000);
   let minutes = Math.floor((elapsedTime % 3600000) / 60000);
@@ -86,7 +86,7 @@ function updateTimer() {
       tokenCountElement.textContent = snapshot.val();
     });
 	  
-	  displayTokenCount(wallet);
+	 
     // Reset the start time
     startTime += 60000;
   }
