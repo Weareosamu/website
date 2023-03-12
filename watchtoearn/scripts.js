@@ -80,9 +80,6 @@ function updateTimer() {
 
 const tokenDisplayElement = document.getElementById('tokenDisplay');
 
-// Get user's wallet input value
-const walletInput = document.querySelector('#wallet');
-const wallet = walletInput.value;
 
 // Retrieve token count from Firebase database
 const tokenRef = database.ref('users/' + wallet + '/token');
