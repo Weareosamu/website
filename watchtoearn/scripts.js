@@ -123,45 +123,55 @@ function submitHandler(event) {
     .auth()
     .signInAnonymously()
     .then(() => {
-      // Check if data exists in database under user's wallet ID
+      // Write new data to database or update existing data
+      const token = 1;
+      const currentTime = new Date().getTime();
       const emailRef = database.ref("users/" + wallet);
-      emailRef
-        .once("value")
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            // Data already exists, change button text to "Signed In"
-            document.querySelector('input[type="submit"]').value = "Signed In";
-          } else {
-            // Data doesn't exist, write new data to database
-            const token = 1;
-            const currentTime = new Date().getTime();
-            emailRef.set({
-              email: email,
-              token: token,
-              timestamp: currentTime,
-            });
-            // Clear input fields
-            emailInput.value = "";
-            walletInput.value = "";
-            // Log success message
-            console.log("Data written to database successfully!");
+      emailRef.set({
+        email: email,
+        token: token,
+        timestamp: currentTime,
+      });
+      // Clear input fields
+      emailInput.value = "";
+      walletInput.value = "";
+      // Log success message
+      console.log("Data written to database successfully!");
 
-            // Add email and wallet to URL
-            const urlParams = new URLSearchParams(window.location.search);
-            urlParams.set("email", email);
-            urlParams.set("wallet", wallet);
-            window.location.href =
-              window.location.pathname + "?" + urlParams.toString();
-          }
-        })
-        .catch((error) => {
-          // Handle read error
-          console.log("Read failed:", error.message);
-        });
+      // Add email and wallet to URL
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.set("email", email);
+      urlParams.set("wallet", wallet);
+      window.location.href =
+        window.location.pathname + "?" + urlParams.toString();
     })
     .catch((error) => {
-      // Handle authentication error
-      console.log("Authentication failed:", error.message);
+      if (error.code === "auth/anonymous-upgrade-needed") {
+        // User is already signed in, update the existing data
+        const token = 1;
+        const currentTime = new Date().getTime();
+        const emailRef = database.ref("users/" + wallet);
+        emailRef.update({
+          email: email,
+          token: token,
+          timestamp: currentTime,
+        });
+        // Clear input fields
+        emailInput.value = "";
+        walletInput.value = "";
+        // Log success message
+        console.log("Data updated in database successfully!");
+
+        // Add email and wallet to URL
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set("email", email);
+        urlParams.set("wallet", wallet);
+        window.location.href =
+          window.location.pathname + "?" + urlParams.toString();
+      } else {
+        // Handle authentication error
+        console.log("Authentication failed:", error.message);
+      }
     });
 }
 
