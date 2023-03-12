@@ -69,16 +69,6 @@ function submitHandler(event) {
   emailInput.value = '';
   walletInput.value = '';
   
-  firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    console.log("User is authenticated");
-  } else {
-    // User is signed out.
-    console.log("User is not authenticated");
-  }
-});
-  
 }
 
 
