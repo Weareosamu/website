@@ -78,12 +78,6 @@ function updateTimer() {
     });
 
 
-	  
-    // Reset the start time
-    startTime += 60000;
-  }
-}
-
 const tokenDisplayElement = document.getElementById('tokenDisplay');
 
 // Get user's wallet input value
@@ -95,6 +89,12 @@ const tokenRef = database.ref('users/' + wallet + '/token');
 tokenRef.on('value', function(snapshot) {
   tokenDisplayElement.textContent = snapshot.val();
 });
+	  
+    // Reset the start time
+    startTime += 60000;
+  }
+}
+
 ////////////////////////////////////////////////////////////////TIMEREND
 
 function submitHandler(event) {
