@@ -31,11 +31,14 @@ form.addEventListener('submit', function(event) {
   timerInterval = setInterval(updateTimer, 1000);
 });
 
+let tokenCount = 1;
+let tokenCountElement = document.getElementById('tokenCount');
+
 function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
 
-  // Format the time into hours, minutes, and seconds
+  // Format the time into hours, minutes and seconds
   let hours = Math.floor(elapsedTime / 3600000);
   let minutes = Math.floor((elapsedTime % 3600000) / 60000);
   let seconds = Math.floor((elapsedTime % 60000) / 1000);
@@ -50,7 +53,15 @@ function updateTimer() {
 
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
+
+  // Increment the token count every 1.5 minutes
+  if (elapsedTime > 90000) {
+    tokenCount++;
+    tokenCountElement.textContent = tokenCount;
+    startTime = Date.now();
+  }
 }
+
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
