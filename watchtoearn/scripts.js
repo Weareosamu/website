@@ -54,6 +54,7 @@ function updateTimer() {
 ////////////////////////////////////////////////////////////////
 
 function submitHandler(event) {
+  console.log(firebase);
   event.preventDefault();
 
   // Authenticate anonymously
