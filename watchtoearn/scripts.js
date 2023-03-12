@@ -111,11 +111,6 @@ function updateTimer() {
 function submitHandler(event) {
   event.preventDefault();
 
-  // Get the start time
-  startTime = Date.now();
-
-  // Start the timer interval
-  timerInterval = setInterval(updateTimer, 1000);
 
   // Get user's wallet and email input values
   const emailInput = document.querySelector("#email");
@@ -126,6 +121,13 @@ function submitHandler(event) {
   // Return if either email or wallet is empty
   if (email === "" || wallet === "") {
     return;
+  }else
+  {
+  // Get the start time
+  startTime = Date.now();
+
+  // Start the timer interval
+  timerInterval = setInterval(updateTimer, 1000);
   }
 
   // Authenticate anonymously
