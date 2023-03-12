@@ -38,13 +38,20 @@ let startTime, elapsedTime, timerInterval;
 const form = document.querySelector('#tokenForm');
 const timer = document.querySelector('#timer');
 
+// Extract the wallet parameter from the URL
+const params = new URLSearchParams(window.location.search);
+const walletParam = params.get('wallet');
+
+// Set the value of the wallet input field
+const walletInput = document.querySelector('#wallet');
+walletInput.value = walletParam;
+
 form.addEventListener('submit', function(event) {
   event.preventDefault();
 
   // Get the start time and the token count from Firebase
   startTime = Date.now();
-  const walletInput = document.querySelector('#wallet');
-  const wallet = walletInput.value;
+  const wallet = walletParam; // Use the wallet parameter from the URL
   const tokenRef = database.ref('users/' + wallet + '/token');
   tokenRef.once('value').then((snapshot) => {
     tokenCount = snapshot.val() || 0;
@@ -61,7 +68,7 @@ let tokenCountElement = document.getElementById('tokenCount');
 function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
- 
+
   // Format the time into hours, minutes, and seconds
   let hours = Math.floor(elapsedTime / 3600000);
   let minutes = Math.floor((elapsedTime % 3600000) / 60000);
@@ -81,8 +88,7 @@ function updateTimer() {
   // Check if a minute has passed and add 1 token if so
   if (elapsedTime >= 60000) {
     // Update the token count in the Firebase database using transaction()
-    const walletInput = document.querySelector('#wallet');
-    const wallet = walletInput.value;
+    const wallet = walletParam; // Use the wallet parameter from the URL
     const tokenRef = database.ref('users/' + wallet + '/token');
     tokenRef.transaction(function(currentTokenCount) {
       return (currentTokenCount || 0) + 0.5;
@@ -92,14 +98,13 @@ function updateTimer() {
     database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
       tokenCountElement.textContent = snapshot.val();
     });
-	  
-	 
+
     // Reset the start time
     startTime += 60000;
   }
-	displayTokenCount();
-	
+  displayTokenCount();
 }
+
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
