@@ -40,7 +40,7 @@ const timer = document.querySelector('#timer');
 
 // Extract the wallet parameter from the URL
 const params = new URLSearchParams(window.location.search);
-const walletParam = urlParams.get("wallet");
+const walletParam = params.get("wallet");
 
 // Set the value of the wallet input field
 const walletInput = document.querySelector('#wallet');
