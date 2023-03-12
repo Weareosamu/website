@@ -64,8 +64,7 @@ function updateTimer() {
 function submitHandler(event) {
 event.preventDefault();
 
-// Get the start time
-	startTime = Date.now();
+
 
 // Start the timer interval
 	timerInterval = setInterval(updateTimer, 1000);
