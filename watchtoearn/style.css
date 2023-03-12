@@ -1,0 +1,60 @@
+
+html, body {
+  background-color: #f5d6d6;
+  color: #363636;
+  font-family: Arial, sans-serif;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+h1 {
+	font-size: 2.5rem;
+	margin-bottom: 1.5rem;
+	color: #ee3769;
+}
+
+label {
+	display: inline-block;
+	margin-bottom: 0.5rem;
+	color: #363636;
+	font-weight: bold;
+}
+
+input[type="email"],
+input[type="text"] {
+	padding: 0.5rem;
+	border: none;
+	border-radius: 4px;
+	margin-bottom: 1rem;
+	background-color: #f8e8e8;
+}
+
+input[type="submit"] {
+	padding: 0.5rem 1rem;
+	background-color: #ee3769;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover {
+	background-color: #b82f5b;
+}
+
+p {
+	margin-top: 1rem;
+}
+
+#tokenCount {
+	font-weight: bold;
+	color: #ee3769;
+}
+
+#timer {
+	font-weight: bold;
+	color: #ee3769;
+	font-size: 1.2rem;
+}
