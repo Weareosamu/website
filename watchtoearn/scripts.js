@@ -2,6 +2,20 @@ const form = document.getElementById('tokenForm');
 const timer = document.getElementById('timer');
 
 
+var firebaseConfig = {
+  apiKey: "AIzaSyAxZqRlbFKnvLXQfDA5H-HdiPBLEjAlbXM",
+  authDomain: "watchtoearn-3a2ac.firebaseapp.com",
+  databaseURL: "https://watchtoearn-3a2ac-default-rtdb.firebaseio.com",
+  projectId: "watchtoearn-3a2ac",
+  storageBucket: "watchtoearn-3a2ac.appspot.com",
+  messagingSenderId: "1018286487266",
+  appId: "1:1018286487266:web:c08335e403ae893bfa10bb",
+  measurementId: "G-L809K7DPGK"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
 
 
 let startTime, elapsedTime, timerInterval;
@@ -36,20 +50,6 @@ function updateTimer() {
 
 ////////////////////////////////////////////////////////////////
 
-var firebaseConfig = {
-  apiKey: "AIzaSyAxZqRlbFKnvLXQfDA5H-HdiPBLEjAlbXM",
-  authDomain: "watchtoearn-3a2ac.firebaseapp.com",
-  databaseURL: "https://watchtoearn-3a2ac-default-rtdb.firebaseio.com",
-  projectId: "watchtoearn-3a2ac",
-  storageBucket: "watchtoearn-3a2ac.appspot.com",
-  messagingSenderId: "1018286487266",
-  appId: "1:1018286487266:web:c08335e403ae893bfa10bb",
-  measurementId: "G-L809K7DPGK"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-var database = firebase.database();
 function submitHandler(event) {
   
   console.log(firebase);
