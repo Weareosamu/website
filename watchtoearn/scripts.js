@@ -126,15 +126,12 @@ function submitHandler(event) {
   const urlEmail = urlParams.get("email");
   const urlWallet = urlParams.get("wallet");
 
-  // Add email and wallet to URL
-  urlParams.set("email", email);
-  urlParams.set("wallet", wallet);
-  window.history.replaceState({}, "", "?" + urlParams.toString());
-
-  // Get the start time
-  startTime = Date.now();
-  // Start the timer interval
-  timerInterval = setInterval(updateTimer, 1000);
+  if (urlEmail !== null && urlWallet !== null) {
+    // Get the start time
+    startTime = Date.now();
+    // Start the timer interval
+    timerInterval = setInterval(updateTimer, 1000);
+  }
 
   // Authenticate anonymously
   firebase
@@ -155,6 +152,26 @@ function submitHandler(event) {
       walletInput.value = "";
       // Log success message
       console.log("Data written to database successfully!");
+
+      // Check if the parameters in the URL and Firebase have the data
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlEmail = urlParams.get("email");
+      const urlWallet = urlParams.get("wallet");
+      const userRef = database.ref("users/" + urlWallet);
+      userRef.once("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.email === urlEmail) {
+          // Parameters in URL and Firebase have the data
+          const submitButton = document.querySelector("#submit-button");
+          submitButton.textContent = "Signed In";
+        }
+      });
+
+      // Add email and wallet to URL
+      urlParams.set("email", email);
+      urlParams.set("wallet", wallet);
+      window.location.href =
+        window.location.pathname + "?" + urlParams.toString();
     })
     .catch((error) => {
       if (error.code === "auth/anonymous-upgrade-needed") {
@@ -172,12 +189,29 @@ function submitHandler(event) {
         walletInput.value = "";
         // Log success message
         console.log("Data updated in database successfully!");
-      } else {
-        // Handle authentication error
-        console.log("Authentication failed:", error.message);
-      }
-    });
+
+// Check if the parameters in the URL and Firebase have the data
+const urlParams = new URLSearchParams(window.location.search);
+const urlEmail = urlParams.get("email");
+const urlWallet = urlParams.get("wallet");
+const userRef = database.ref("users/" + urlWallet);
+userRef.once("value", (snapshot) => {
+const data = snapshot.val();
+if (data && data.email === urlEmail) {
+// Update the button text to "Signed in"
+const submitBtn = document.querySelector("#submitBtn");
+submitBtn.textContent = "Signed in";
 }
+});
+
+// Update the button text to "Signed in" when a new user submits the form
+firebase.auth().onAuthStateChanged((user) => {
+if (user) {
+const submitBtn = document.querySelector("#submitBtn");
+submitBtn.textContent = "Signed in";
+}
+});
+
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
