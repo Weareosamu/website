@@ -48,17 +48,24 @@ firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
 var database = firebase.database();
 
-function submitHandler() {
-  var email = document.getElementById("email").value;
-  var wallet = document.getElementById("wallet").value;
-  var tokenCount = parseInt(document.getElementById("tokenCount").innerText);
-
-  // Write the data to the database
-  database.ref('users/' + email).set({
+function submitHandler(event) {
+  event.preventDefault();
+  const emailInput = document.querySelector('#email');
+  const walletInput = document.querySelector('#wallet');
+  const email = emailInput.value;
+  const wallet = walletInput.value;
+  const token = 1; // Initial token value
+  const currentTime = new Date().getTime(); // Get current time in milliseconds
+  const emailRef = database.ref('users/' + email);
+  emailRef.set({
     wallet: wallet,
-    tokenCount: tokenCount
+    token: token,
+    timestamp: currentTime
   });
+  emailInput.value = '';
+  walletInput.value = '';
 }
+
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
