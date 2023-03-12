@@ -67,19 +67,19 @@ p {
   position: fixed;
   top: 0;
   left: 0;
-  height: 50px;
-  background-color: #333;
-  color: #FFF;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  border-radius: 0 15px 0 0;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  background-color: #FF69B4; /* change the background color to pink */
+  padding: 10px; /* add padding to create some space around the content */
+  border-top-left-radius: 15px; /* round the top-left corner */
+  border-bottom-right-radius: 15px; /* round the bottom-right corner */
 }
 
 #tokenDisplay span {
+  display: inline-block;
   font-size: 24px;
   margin-right: 5px;
+  background-color: #FFF; /* add a white background to the span */
+  padding: 5px 10px; /* add padding to create some space around the content */
+  border-top-left-radius: 15px; /* round the top-left corner of the span */
+  border-bottom-right-radius: 15px; /* round the bottom-right corner of the span */
 }
-
 
