@@ -15,6 +15,15 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+function displayTokenCount(wallet) {
+  const tokenRef = database.ref('users/' + wallet + '/token');
+  tokenRef.on('value', function(snapshot) {
+    const tokenCount = snapshot.val() || 0;
+    const tokenDisplayElement = document.getElementById('tokenDisplay');
+    tokenDisplayElement.textContent = tokenCount;
+  });
+}
+
 ////////////////////////////////////////////////////////////////TIMER
 
 let startTime, elapsedTime, timerInterval;
@@ -144,14 +153,7 @@ firebase.auth().signInAnonymously()
  
 }
 
-function displayTokenCount(wallet) {
-  const tokenRef = database.ref('users/' + wallet + '/token');
-  tokenRef.on('value', function(snapshot) {
-    const tokenCount = snapshot.val() || 0;
-    const tokenDisplayElement = document.getElementById('tokenDisplay');
-    tokenDisplayElement.textContent = tokenCount;
-  });
-}
+
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
