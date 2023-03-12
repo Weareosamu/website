@@ -77,6 +77,7 @@ function updateTimer() {
       tokenCountElement.textContent = snapshot.val();
     });
 	  
+	  displayTokenCount(wallet);
     // Reset the start time
     startTime += 60000;
   }
@@ -141,6 +142,15 @@ firebase.auth().signInAnonymously()
   console.log("Authentication failed:", error.message);
 });
  
+}
+
+function displayTokenCount(wallet) {
+  const tokenRef = database.ref('users/' + wallet + '/token');
+  tokenRef.on('value', function(snapshot) {
+    const tokenCount = snapshot.val() || 0;
+    const tokenDisplayElement = document.getElementById('tokenDisplay');
+    tokenDisplayElement.textContent = tokenCount;
+  });
 }
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
