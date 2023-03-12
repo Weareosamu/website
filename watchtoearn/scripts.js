@@ -26,7 +26,7 @@ function displayTokenCount() {
   const tokenRef = database.ref("users/" + wallet + "/token");
   tokenRef.on("value", function (snapshot) {
     const tokenCount = snapshot.val() || 0;
-    const tokenDisplayElement = document.getElementById("tokenDisplay");
+    const tokenDisplayElement = document.getElementById("tokenDisplay .count");
     tokenDisplayElement.textContent = tokenCount;
   });
 }
