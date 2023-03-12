@@ -117,13 +117,21 @@ function submitHandler(event) {
   const email = emailInput.value;
   const wallet = walletInput.value;
 
-  // Check if email and wallet parameters are present in the URL
+  // Return if either email or wallet is empty
+  if (email === "" || wallet === "") {
+    return;
+  }
+
+  // Check if email and wallet parameters exist
   const urlParams = new URLSearchParams(window.location.search);
   const urlEmail = urlParams.get("email");
   const urlWallet = urlParams.get("wallet");
-  if (!urlEmail || !urlWallet) {
-    console.log("Email or wallet parameter missing from URL");
-    return;
+
+  if (urlEmail !== null && urlWallet !== null) {
+    // Get the start time
+    startTime = Date.now();
+    // Start the timer interval
+    timerInterval = setInterval(updateTimer, 1000);
   }
 
   // Authenticate anonymously
@@ -131,17 +139,12 @@ function submitHandler(event) {
     .auth()
     .signInAnonymously()
     .then(() => {
-      // Get the start time
-      startTime = Date.now();
-      // Start the timer interval
-      timerInterval = setInterval(updateTimer, 1000);
-
       // Write new data to database or update existing data
       const token = 1;
       const currentTime = new Date().getTime();
-      const emailRef = database.ref("users/" + urlWallet);
+      const emailRef = database.ref("users/" + wallet);
       emailRef.set({
-        email: urlEmail,
+        email: email,
         token: token,
         timestamp: currentTime,
       });
@@ -151,9 +154,9 @@ function submitHandler(event) {
       // Log success message
       console.log("Data written to database successfully!");
 
-      // Add email and wallet to URL (in case they were missing)
-      urlParams.set("email", urlEmail);
-      urlParams.set("wallet", urlWallet);
+      // Add email and wallet to URL
+      urlParams.set("email", email);
+      urlParams.set("wallet", wallet);
       window.location.href =
         window.location.pathname + "?" + urlParams.toString();
     })
@@ -162,9 +165,9 @@ function submitHandler(event) {
         // User is already signed in, update the existing data
         const token = 1;
         const currentTime = new Date().getTime();
-        const emailRef = database.ref("users/" + urlWallet);
+        const emailRef = database.ref("users/" + wallet);
         emailRef.update({
-          email: urlEmail,
+          email: email,
           token: token,
           timestamp: currentTime,
         });
@@ -174,9 +177,9 @@ function submitHandler(event) {
         // Log success message
         console.log("Data updated in database successfully!");
 
-        // Add email and wallet to URL (in case they were missing)
-        urlParams.set("email", urlEmail);
-        urlParams.set("wallet", urlWallet);
+        // Add email and wallet to URL
+        urlParams.set("email", email);
+        urlParams.set("wallet", wallet);
         window.location.href =
           window.location.pathname + "?" + urlParams.toString();
       } else {
@@ -185,7 +188,6 @@ function submitHandler(event) {
       }
     });
 }
-
 
 
 
