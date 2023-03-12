@@ -71,3 +71,12 @@ p {
   padding: 10px; /* add padding to create some space around the content */
   border-radius: 0 15px 15px 0; /* round the top-right and bottom-right corners */
 }
+
+#tokenDisplay .count {
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+#tokenDisplay .emoji {
+  font-size: 24px;
+}
