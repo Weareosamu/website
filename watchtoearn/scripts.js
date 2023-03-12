@@ -84,12 +84,17 @@ function updateTimer() {
   }
 }
 
-	  // Listen for changes in the token count in the Firebase database
-database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
-  // Update the token count element in the HTML
-  tokenCountElement.textContent = snapshot.val();
-});
+const tokenDisplayElement = document.getElementById('tokenDisplay');
 
+// Get user's wallet input value
+const walletInput = document.querySelector('#wallet');
+const wallet = walletInput.value;
+
+// Retrieve token count from Firebase database
+const tokenRef = database.ref('users/' + wallet + '/token');
+tokenRef.on('value', function(snapshot) {
+  tokenDisplayElement.textContent = snapshot.val();
+});
 ////////////////////////////////////////////////////////////////TIMEREND
 
 function submitHandler(event) {
