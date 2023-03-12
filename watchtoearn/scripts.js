@@ -107,7 +107,6 @@ function updateTimer() {
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
-
 function submitHandler(event) {
   event.preventDefault();
 
@@ -127,12 +126,15 @@ function submitHandler(event) {
   const urlEmail = urlParams.get("email");
   const urlWallet = urlParams.get("wallet");
 
-  if (urlEmail !== null && urlWallet !== null) {
-    // Get the start time
-    startTime = Date.now();
-    // Start the timer interval
-    timerInterval = setInterval(updateTimer, 1000);
-  }
+  // Add email and wallet to URL
+  urlParams.set("email", email);
+  urlParams.set("wallet", wallet);
+  window.history.replaceState({}, "", "?" + urlParams.toString());
+
+  // Get the start time
+  startTime = Date.now();
+  // Start the timer interval
+  timerInterval = setInterval(updateTimer, 1000);
 
   // Authenticate anonymously
   firebase
@@ -153,12 +155,6 @@ function submitHandler(event) {
       walletInput.value = "";
       // Log success message
       console.log("Data written to database successfully!");
-
-      // Add email and wallet to URL
-      urlParams.set("email", email);
-      urlParams.set("wallet", wallet);
-      window.location.href =
-        window.location.pathname + "?" + urlParams.toString();
     })
     .catch((error) => {
       if (error.code === "auth/anonymous-upgrade-needed") {
@@ -176,21 +172,12 @@ function submitHandler(event) {
         walletInput.value = "";
         // Log success message
         console.log("Data updated in database successfully!");
-
-        // Add email and wallet to URL
-        urlParams.set("email", email);
-        urlParams.set("wallet", wallet);
-        window.location.href =
-          window.location.pathname + "?" + urlParams.toString();
       } else {
         // Handle authentication error
         console.log("Authentication failed:", error.message);
       }
     });
 }
-
-
-
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
