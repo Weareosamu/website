@@ -51,47 +51,57 @@ function updateTimer() {
 ////////////////////////////////////////////////////////////////
 
 function submitHandler(event) {
-  
-  console.log(firebase);
-  
+event.preventDefault();
 
-  
-  event.preventDefault();
+// Get user's wallet and email input values
+const emailInput = document.querySelector('#email');
+const walletInput = document.querySelector('#wallet');
+const email = emailInput.value;
+const wallet = walletInput.value;
 
-  // Authenticate anonymously
-  firebase.auth().signInAnonymously()
-    .then(() => {
-      // Get user's wallet and email input values
-      const emailInput = document.querySelector('#email');
-      const walletInput = document.querySelector('#wallet');
-      const email = emailInput.value;
-      const wallet = walletInput.value;
-
-      // Set initial token value and current timestamp
-      const token = 1;
-      const currentTime = new Date().getTime();
-
-      // Write data to database under user's wallet ID
-      const emailRef = database.ref('users/' + wallet);
-      emailRef.set({
-        email: email,
-        token: token,
-        timestamp: currentTime
-      });
-
-      // Clear input fields
-      emailInput.value = '';
-      walletInput.value = '';
-
-      // Log success message
-      console.log("Data written to database successfully!");
-
+// Return if either email or wallet is empty
+if (email === '' || wallet === '') {
+return;
+}
+  // Check if data exists in database under user's wallet ID
+  const emailRef = database.ref('users/' + wallet);
+  emailRef.once('value')
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        // Data already exists, change button text to "Signed In"
+        document.querySelector('input[type="submit"]').value = 'Signed In';
+      } else {
+        // Data doesn't exist, write new data to database
+        const token = 1;
+        const currentTime = new Date().getTime();
+        emailRef.set({
+          email: email,
+          token: token,
+          timestamp: currentTime
+        });
+        // Clear input fields
+        emailInput.value = '';
+        walletInput.value = '';
+        // Log success message
+        console.log("Data written to database successfully!");
+      }
     })
     .catch((error) => {
-      // Handle authentication error
-      console.log("Authentication failed:", error.message);
+      // Handle read error
+      console.log("Read failed:", error.message);
     });
-}
+
+})
+.catch((error) => {
+  // Handle authentication error
+  console.log("Authentication failed:", error.message);
+});
+}  
+  
+
+// Authenticate anonymously
+firebase.auth().signInAnonymously()
+.then(() => {
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
