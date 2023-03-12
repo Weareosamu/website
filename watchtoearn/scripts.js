@@ -15,7 +15,9 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
-function displayTokenCount(wallet) {
+function displayTokenCount() {
+	const walletInput = document.querySelector('#wallet');
+    const wallet = walletInput.value;
   const tokenRef = database.ref('users/' + wallet + '/token');
   tokenRef.on('value', function(snapshot) {
     const tokenCount = snapshot.val() || 0;
@@ -90,7 +92,7 @@ function updateTimer() {
     // Reset the start time
     startTime += 60000;
   }
-	displayTokenCount(wallet);
+	displayTokenCount();
 	
 }
 
