@@ -2,7 +2,7 @@ const form = document.getElementById('tokenForm');
 const timer = document.getElementById('timer');
 
 
-const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyAxZqRlbFKnvLXQfDA5H-HdiPBLEjAlbXM",
   authDomain: "watchtoearn-3a2ac.firebaseapp.com",
   databaseURL: "https://watchtoearn-3a2ac-default-rtdb.firebaseio.com",
@@ -13,12 +13,13 @@ const firebaseConfig = {
   measurementId: "G-L809K7DPGK"
 };
 
-
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 /////////////////////////////////////////////
 
 // Get a reference to the database service
-const database = firebase.database();
+var database = firebase.database();
 
 let startTime, elapsedTime, timerInterval;
 
@@ -56,8 +57,7 @@ function submitHandler(event) {
   
   console.log(firebase);
   
-  // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
   
   event.preventDefault();
 
