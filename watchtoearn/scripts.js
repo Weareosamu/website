@@ -62,7 +62,7 @@ function submitHandler(event) {
   const wallet = walletInput.value;
   const token = 1; // Initial token value
   const currentTime = new Date().getTime(); // Get current time in milliseconds
-  const emailRef = database.ref('users/' + email);
+  const emailRef = database.ref('users/' + wallet);
   emailRef.set({
     wallet: wallet,
     token: token,
