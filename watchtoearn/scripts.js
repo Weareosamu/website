@@ -95,6 +95,7 @@ function updateTimer() {
 
     // Update the token count in the Firebase database using transaction()
 const wallet = walletParam; // Use the wallet parameter from the URL
+    console.log(" ${wallet} ");
 const tokenRef = database.ref('users/' + wallet + '/token');
 tokenRef.transaction(function(currentTokenCount) {
   if (currentTokenCount === null || currentTokenCount === undefined) {
