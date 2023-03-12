@@ -56,23 +56,41 @@ function updateTimer() {
 
 function submitHandler(event) {
   event.preventDefault();
-  const emailInput = document.querySelector('#email');
-  const walletInput = document.querySelector('#wallet');
-  const email = emailInput.value;
-  const wallet = walletInput.value;
-  const token = 1; // Initial token value
-  const currentTime = new Date().getTime(); // Get current time in milliseconds
-  const emailRef = database.ref('users/' + wallet);
-  emailRef.set({
-    wallet: wallet,
-    token: token,
-    timestamp: currentTime
-  });
-  emailInput.value = '';
-  walletInput.value = '';
-  
-}
 
+  // Authenticate anonymously
+  firebase.auth().signInAnonymously()
+    .then(() => {
+      // Get user's wallet and email input values
+      const emailInput = document.querySelector('#email');
+      const walletInput = document.querySelector('#wallet');
+      const email = emailInput.value;
+      const wallet = walletInput.value;
+
+      // Set initial token value and current timestamp
+      const token = 1;
+      const currentTime = new Date().getTime();
+
+      // Write data to database under user's wallet ID
+      const emailRef = database.ref('users/' + wallet);
+      emailRef.set({
+        email: email,
+        token: token,
+        timestamp: currentTime
+      });
+
+      // Clear input fields
+      emailInput.value = '';
+      walletInput.value = '';
+
+      // Log success message
+      console.log("Data written to database successfully!");
+
+    })
+    .catch((error) => {
+      // Handle authentication error
+      console.log("Authentication failed:", error.message);
+    });
+}
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
 submitBtn.addEventListener('click', submitHandler);
