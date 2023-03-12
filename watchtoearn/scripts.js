@@ -32,7 +32,7 @@ form.addEventListener('submit', function(event) {
   timerInterval = setInterval(updateTimer, 1000);
 });
 
-let tokenCount = 1;
+let tokenCount = 0;
 let tokenCountElement = document.getElementById('tokenCount');
 
 function updateTimer() {
