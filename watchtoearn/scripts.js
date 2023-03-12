@@ -62,16 +62,20 @@ function updateTimer() {
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
 
-  // Check if a minute has passed and add 1 token to the count if so
+  // Check if a minute has passed and add 1 token if so
   if (elapsedTime >= 60000) {
-    tokenCount += 0.5;
-    tokenCountElement.textContent = tokenCount;
-
-    // Update the Firebase database with the new token count
+    // Update the token count in the Firebase database using transaction()
     const walletInput = document.querySelector('#wallet');
     const wallet = walletInput.value;
     const tokenRef = database.ref('users/' + wallet + '/token');
-    tokenRef.set(tokenCount);
+    tokenRef.transaction(function(currentTokenCount) {
+      return (currentTokenCount || 0) + 1;
+    });
+
+    // Update the token count element in the HTML
+    database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
+      tokenCountElement.textContent = snapshot.val();
+    });
 
     // Reset the start time
     startTime += 60000;
