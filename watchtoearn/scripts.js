@@ -1,5 +1,3 @@
-const form = document.getElementById('tokenForm');
-const timer = document.getElementById('timer');
 
 
 var firebaseConfig = {
@@ -17,8 +15,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
-
+////////////////////////////////////////////////////////////////TIMER
 let startTime, elapsedTime, timerInterval;
+
+const form = document.querySelector('#tokenForm');
+const timer = document.querySelector('#timer');
 
 form.addEventListener('submit', function(event) {
   event.preventDefault();
@@ -47,8 +48,7 @@ function updateTimer() {
   timer.textContent = `${minutes}:${seconds}`;
 }
 
-
-////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////TIMEREND
 
 function submitHandler(event) {
 event.preventDefault();
