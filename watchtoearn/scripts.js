@@ -82,7 +82,6 @@ const tokenDisplayElement = document.getElementById('tokenDisplay');
 
 
 // Retrieve token count from Firebase database
-const tokenRef = database.ref('users/' + wallet + '/token');
 tokenRef.on('value', function(snapshot) {
   tokenDisplayElement.textContent = snapshot.val();
 });
