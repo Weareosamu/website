@@ -110,7 +110,8 @@ function updateTimer() {
 
 function submitHandler(event) {
   event.preventDefault();
-
+// Get the start time
+  startTime = Date.now();
 
   // Get user's wallet and email input values
   const emailInput = document.querySelector("#email");
@@ -123,8 +124,7 @@ function submitHandler(event) {
     return;
   }else
   {
-  // Get the start time
-  startTime = Date.now();
+  
 
   // Start the timer interval
   timerInterval = setInterval(updateTimer, 1000);
