@@ -69,7 +69,7 @@ function updateTimer() {
     const wallet = walletInput.value;
     const tokenRef = database.ref('users/' + wallet + '/token');
     tokenRef.transaction(function(currentTokenCount) {
-      return (currentTokenCount || 0) + 1;
+      return (currentTokenCount || 0) + 0.5;
     });
 
     // Update the token count element in the HTML
