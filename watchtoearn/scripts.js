@@ -76,15 +76,6 @@ function updateTimer() {
     database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
       tokenCountElement.textContent = snapshot.val();
     });
-
-
-const tokenDisplayElement = document.getElementById('tokenDisplay');
-
-
-// Retrieve token count from Firebase database
-tokenRef.on('value', function(snapshot) {
-  tokenDisplayElement.textContent = snapshot.val();
-});
 	  
     // Reset the start time
     startTime += 60000;
