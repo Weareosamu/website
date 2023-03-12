@@ -38,7 +38,7 @@ function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
 
-  // Format the time into hours, minutes and seconds
+  // Format the time into hours, minutes, and seconds
   let hours = Math.floor(elapsedTime / 3600000);
   let minutes = Math.floor((elapsedTime % 3600000) / 60000);
   let seconds = Math.floor((elapsedTime % 60000) / 1000);
@@ -54,10 +54,18 @@ function updateTimer() {
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
 
-  // Increment the token count every 1.5 minutes
-  if (elapsedTime > 90000) {
+  // Check if 1.5 minutes have passed and add 1 token to the count if so
+  if (elapsedTime >= 90000) {
     tokenCount++;
     tokenCountElement.textContent = tokenCount;
+
+    // Update the Firebase database with the new token count
+    const walletInput = document.querySelector('#wallet');
+    const wallet = walletInput.value;
+    const tokenRef = database.ref('users/' + wallet + '/token');
+    tokenRef.set(tokenCount);
+
+    // Reset the start time
     startTime = Date.now();
   }
 }
