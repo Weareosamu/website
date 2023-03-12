@@ -16,12 +16,17 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
 function displayTokenCount() {
-	const walletInput = document.querySelector('#wallet');
-    const wallet = walletInput.value;
-  const tokenRef = database.ref('users/' + wallet + '/token');
-  tokenRef.on('value', function(snapshot) {
+  // Get wallet from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const wallet = urlParams.get("wallet");
+  if (!wallet) {
+    return;
+  }
+
+  const tokenRef = database.ref("users/" + wallet + "/token");
+  tokenRef.on("value", function (snapshot) {
     const tokenCount = snapshot.val() || 0;
-    const tokenDisplayElement = document.getElementById('tokenDisplay');
+    const tokenDisplayElement = document.getElementById("tokenDisplay");
     tokenDisplayElement.textContent = tokenCount;
   });
 }
