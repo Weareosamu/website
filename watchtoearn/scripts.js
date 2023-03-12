@@ -56,6 +56,11 @@ form.addEventListener('submit', function(event) {
   tokenRef.once('value').then((snapshot) => {
     tokenCount = snapshot.val() || 0;
     tokenCountElement.textContent = tokenCount;
+    if (tokenCount === 0) {
+      // Add 1 token for new users
+      tokenRef.set(1);
+      tokenCount = 1;
+    }
   });
 
   // Start the timer interval
@@ -85,7 +90,7 @@ function updateTimer() {
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
 
-  // Check if a minute has passed and add 1 token if so
+  // Check if a minute has passed and add 0.5 token if so
   if (elapsedTime >= 60000) {
     // Update the token count in the Firebase database using transaction()
     const wallet = walletParam; // Use the wallet parameter from the URL
