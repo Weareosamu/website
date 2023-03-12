@@ -16,6 +16,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
 ////////////////////////////////////////////////////////////////TIMER
+
 let startTime, elapsedTime, timerInterval;
 
 const form = document.querySelector('#tokenForm');
@@ -54,9 +55,9 @@ function updateTimer() {
   // Update the timer display
   timer.textContent = `${hours}:${minutes}:${seconds}`;
 
-  // Check if 1.5 minutes have passed and add 1 token to the count if so
-  if (elapsedTime >= 90000) {
-    tokenCount++;
+  // Check if 1 minute has passed and add 0.5 tokens to the count if so
+  if (elapsedTime >= 60000) {
+    tokenCount += 0.5;
     tokenCountElement.textContent = tokenCount;
 
     // Update the Firebase database with the new token count
@@ -69,7 +70,6 @@ function updateTimer() {
     startTime = Date.now();
   }
 }
-
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
