@@ -108,6 +108,7 @@ function updateTimer() {
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
+
 function submitHandler(event) {
   event.preventDefault();
 
@@ -143,27 +144,15 @@ function submitHandler(event) {
     .signInAnonymously()
     .then(() => {
       // Write new data to database or update existing data
-      const token = 1;
       const currentTime = new Date().getTime();
       const emailRef = database.ref("users/" + wallet);
-      emailRef.set({
-        email: email,
-        token: token,
-        timestamp: currentTime,
-      });
-      // Clear input fields
-      emailInput.value = "";
-      walletInput.value = "";
-      // Log success message
-      console.log("Data written to database successfully!");
-    })
-    .catch((error) => {
-      if (error.code === "auth/anonymous-upgrade-needed") {
-        // User is already signed in, update the existing data
-        const token = 1;
-        const currentTime = new Date().getTime();
-        const emailRef = database.ref("users/" + wallet);
-        emailRef.update({
+      emailRef.once("value", (snapshot) => {
+        const data = snapshot.val();
+        let token = 1;
+        if (data && data.token) {
+          token = data.token + 1;
+        }
+        emailRef.set({
           email: email,
           token: token,
           timestamp: currentTime,
@@ -172,7 +161,31 @@ function submitHandler(event) {
         emailInput.value = "";
         walletInput.value = "";
         // Log success message
-        console.log("Data updated in database successfully!");
+        console.log("Data written to database successfully!");
+      });
+    })
+    .catch((error) => {
+      if (error.code === "auth/anonymous-upgrade-needed") {
+        // User is already signed in, update the existing data
+        const currentTime = new Date().getTime();
+        const emailRef = database.ref("users/" + wallet);
+        emailRef.once("value", (snapshot) => {
+          const data = snapshot.val();
+          let token = 1;
+          if (data && data.token) {
+            token = data.token + 1;
+          }
+          emailRef.update({
+            email: email,
+            token: token,
+            timestamp: currentTime,
+          });
+          // Clear input fields
+          emailInput.value = "";
+          walletInput.value = "";
+          // Log success message
+          console.log("Data updated in database successfully!");
+        });
       } else {
         // Handle authentication error
         console.log("Authentication failed:", error.message);
