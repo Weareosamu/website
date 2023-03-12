@@ -99,63 +99,72 @@ function updateTimer() {
 ////////////////////////////////////////////////////////////////TIMEREND
 
 function submitHandler(event) {
-event.preventDefault();
+  event.preventDefault();
 
-// Get the start time
+  // Get the start time
   startTime = Date.now();
 
-// Start the timer interval
-	timerInterval = setInterval(updateTimer, 1000);
-   
-// Get user's wallet and email input values
-const emailInput = document.querySelector('#email');
-const walletInput = document.querySelector('#wallet');
-const email = emailInput.value;
-const wallet = walletInput.value;
+  // Start the timer interval
+  timerInterval = setInterval(updateTimer, 1000);
 
-// Return if either email or wallet is empty
-if (email === '' || wallet === '') {
-return;
-}
+  // Get user's wallet and email input values
+  const emailInput = document.querySelector("#email");
+  const walletInput = document.querySelector("#wallet");
+  const email = emailInput.value;
+  const wallet = walletInput.value;
 
-// Authenticate anonymously
-firebase.auth().signInAnonymously()
-.then(() => {
-  // Check if data exists in database under user's wallet ID
-  const emailRef = database.ref('users/' + wallet);
-  emailRef.once('value')
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        // Data already exists, change button text to "Signed In"
-        document.querySelector('input[type="submit"]').value = 'Signed In';
-      } else {
-        // Data doesn't exist, write new data to database
-        const token = 1;
-        const currentTime = new Date().getTime();
-        emailRef.set({
-          email: email,
-          token: token,
-          timestamp: currentTime
+  // Return if either email or wallet is empty
+  if (email === "" || wallet === "") {
+    return;
+  }
+
+  // Authenticate anonymously
+  firebase
+    .auth()
+    .signInAnonymously()
+    .then(() => {
+      // Check if data exists in database under user's wallet ID
+      const emailRef = database.ref("users/" + wallet);
+      emailRef
+        .once("value")
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            // Data already exists, change button text to "Signed In"
+            document.querySelector('input[type="submit"]').value = "Signed In";
+          } else {
+            // Data doesn't exist, write new data to database
+            const token = 1;
+            const currentTime = new Date().getTime();
+            emailRef.set({
+              email: email,
+              token: token,
+              timestamp: currentTime,
+            });
+            // Clear input fields
+            emailInput.value = "";
+            walletInput.value = "";
+            // Log success message
+            console.log("Data written to database successfully!");
+
+            // Add email and wallet to URL
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set("email", email);
+            urlParams.set("wallet", wallet);
+            window.location.href =
+              window.location.pathname + "?" + urlParams.toString();
+          }
+        })
+        .catch((error) => {
+          // Handle read error
+          console.log("Read failed:", error.message);
         });
-        // Clear input fields
-        emailInput.value = '';
-        walletInput.value = '';
-        // Log success message
-        console.log("Data written to database successfully!");
-      }
     })
     .catch((error) => {
-      // Handle read error
-      console.log("Read failed:", error.message);
+      // Handle authentication error
+      console.log("Authentication failed:", error.message);
     });
-
-})
-.catch((error) => {
-  // Handle authentication error
-  console.log("Authentication failed:", error.message);
-});
- 
 }
+
 
 
 
