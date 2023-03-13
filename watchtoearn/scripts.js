@@ -1,25 +1,6 @@
 const database = firebase.database();
 
-// Define the displayTokenCount function
-function displayTokenCount() {
-  // Get the user ID from the Firebase Authentication object
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
 
-  const uid = user.uid;
-
-  const tokenRef = database.ref("users/" + uid + "/token");
-  tokenRef.on("value", function (snapshot) {
-    const tokenCount = snapshot.val() || 0;
-    const countElement = document.querySelector("#tokenDisplay .count");
-    countElement.textContent = tokenCount;
-  });
-}
-
-// Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 
 ////////////////////////////////////////////////////////////////TIMER
 function addTokens() {
@@ -126,6 +107,27 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
+
+// Define the displayTokenCount function
+function displayTokenCount() {
+  // Get the user ID from the Firebase Authentication object
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+
+  const tokenRef = database.ref("users/" + uid + "/token");
+  tokenRef.on("value", function (snapshot) {
+    const tokenCount = snapshot.val() || 0;
+    const countElement = document.querySelector("#tokenDisplay .count");
+    countElement.textContent = tokenCount;
+  });
+}
+
+// Call the displayTokenCount function every 1 minute
+setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
