@@ -126,22 +126,7 @@ if (!isValidCryptoAddress(wallet)) {
     });
 }
 
-let switchOn = false;
-let timerId;
-
-function toggleSwitch() {
-  const switchEl = document.querySelector('.switch');
-  const circleEl = document.querySelector('.circle');
-  
-  switchOn = !switchOn;
-  
-  if (switchOn) {
-    switchEl.classList.add('on');
-    circleEl.style.transform = 'translate(30px, -50%)';
-    timerId = setTimeout(addTokens, 6000);
-  } else {
-    switchEl.classList.remove('on');
-    circleEl.style.transform = 'translate(0, -50%)';
-    clearTimeout(timerId);
-  }
-}
+const signUpInBtn = document.getElementById("signUpInBtn");
+signUpInBtn.addEventListener("click", () => {
+ setInterval(addTokens(), 6000);
+});
