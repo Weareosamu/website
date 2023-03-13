@@ -87,16 +87,10 @@ function updateTimer() {
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
-function isValidBitcoinAddress(address) {
-  // Bitcoin addresses start with either 1 or 3 and are 26-35 characters long
-  const bitcoinAddressRegex = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/;
-  return bitcoinAddressRegex.test(address);
-}
-
-function isValidEthereumAddress(address) {
-  // Ethereum addresses start with 0x and are 42 characters long
-  const ethereumAddressRegex = /^0x[a-fA-F0-9]{40}$/;
-  return ethereumAddressRegex.test(address);
+function isValidCryptoAddress(address) {
+  // Regular expression that matches Bitcoin, Ethereum, and other cryptocurrency addresses
+  const cryptoAddressRegex = /^([13][a-km-zA-HJ-NP-Z1-9]{25,34}|0x[a-fA-F0-9]{40}|0x[a-fA-F0-9]{42})$/;
+  return cryptoAddressRegex.test(address);
 }
 
 
@@ -106,24 +100,15 @@ function submitHandler(event) {
   // Get user's wallet and email input values
   const emailInput = document.querySelector("#email");
   const walletInput = document.querySelector("#wallet");
-  
-
-  
   const email = emailInput.value;
   const wallet = walletInput.value;
 
-  
-if (!isValidBitcoinAddress(wallet)) {
+if (!isValidCryptoAddress(wallet)) {
   // Wallet address is not valid, show error message and prevent form submission
-  alert("Invalid Bitcoin address!");
+  alert("Invalid cryptocurrency address!");
   return;
 }
 
-if (!isValidEthereumAddress(wallet)) {
-  // Wallet address is not valid, show error message and prevent form submission
-  alert("Invalid Ethereum address!");
-  return;
-}  
   
   // Return if either email or wallet is empty
   if (email === "" || wallet === "") {
