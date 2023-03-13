@@ -147,16 +147,3 @@ function stopTokenTimer() {
   clearInterval(tokenTimer);
 }
 
-function addTokens() {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
-
-  const uid = user.uid;
-
-  const tokenRef = database.ref("users/" + uid + "/token");
-  tokenRef.transaction((tokenCount) => {
-    return (tokenCount || 0) + 0.5;
-  });
-}
