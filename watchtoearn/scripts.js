@@ -126,36 +126,37 @@ if (!isValidCryptoAddress(wallet)) {
     });
 }
 
-const switchElement = document.querySelector('.switch');
-let isActive = false;
+const switchElement = document.querySelector("#switch");
 
-switchElement.addEventListener('click', () => {
-  isActive = !isActive;
-  switchElement.classList.toggle('active', isActive);
-  switchElement.classList.toggle('inactive', !isActive);
-
-  if (isActive) {
-    startTimer();
+switchElement.addEventListener("change", () => {
+  if (switchElement.checked) {
+    startTokenTimer();
   } else {
-    stopTimer();
+    stopTokenTimer();
   }
 });
 
-function startTimer() {
-  // Add token immediately
+let tokenTimer;
+
+function startTokenTimer() {
   addTokens();
-
-  // Add token every minute
-  const intervalId = setInterval(() => {
-    addTokens();
-  }, 6000);
-
-  // Store the interval ID so we can stop the timer later
-  switchElement.dataset.intervalId = intervalId;
+  tokenTimer = setInterval(addTokens, 6000); // Call addTokens() every minute
 }
 
-function stopTimer() {
-  const intervalId = switchElement.dataset.intervalId;
-  clearInterval(intervalId);
+function stopTokenTimer() {
+  clearInterval(tokenTimer);
 }
 
+function addTokens() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+
+  const tokenRef = database.ref("users/" + uid + "/token");
+  tokenRef.transaction((tokenCount) => {
+    return (tokenCount || 0) + 0.5;
+  });
+}
