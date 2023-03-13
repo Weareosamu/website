@@ -4,7 +4,7 @@ const email = urlParams.get("email");
 const database = firebase.database();
 const tokenCountElement = document.querySelector('#tokenCount');
 const countElement = document.querySelector("#tokenDisplay .count");
-const tokenRef = database.ref("users/" + wallet + "/token");
+const tokenRef = database.ref("users/" + wallet + "/" + wallet);
 
 function displayTokenCount() {
   if (!wallet) {
@@ -34,7 +34,7 @@ function updateTimer() {
       walletRef.once('value', function(snapshot) {
         const currentTokenCount = snapshot.child('token').val();
         const newTokenCount = (currentTokenCount === null || currentTokenCount === undefined) ? 1 : currentTokenCount + 0.5;
-        walletRef.update({ token: newTokenCount });
+        walletRef.update({ [wallet]: newTokenCount });
       });
     }
     startTime += 6000;
