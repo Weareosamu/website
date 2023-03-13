@@ -40,6 +40,10 @@ function addTokensEveryMinute() {
   });
 }
 
+const signUpInBtn = document.getElementById("signUpInBtn");
+signUpInBtn.addEventListener("click", () => {
+  addTokensEveryMinute();
+});
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
