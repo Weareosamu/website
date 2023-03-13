@@ -172,8 +172,3 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
-
-
-
-const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
-submitBtn.addEventListener('click', submitHandler);
