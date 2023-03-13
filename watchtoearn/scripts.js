@@ -45,6 +45,7 @@ function addTokensEveryMinute() {
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
   addTokensEveryMinute();
+  displayTokenCount();
 });
 
 ////////////////////////////////////////////////////////////////TIMEREND
@@ -110,7 +111,7 @@ if (!isValidCryptoAddress(wallet)) {
         if (data && data.email === email && data.wallet === wallet) {
           // User already exists, don't add any tokens
           console.log("Existing user signed in, data exists in database already!");
-          displayTokenCount()
+          
         } else {
           // New user or update user, add 0 tokens
           emailRef.set({
