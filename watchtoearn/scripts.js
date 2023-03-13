@@ -1,5 +1,3 @@
-(function() {
-
 var firebaseConfig = {
   apiKey: "AIzaSyAxZqRlbFKnvLXQfDA5H-HdiPBLEjAlbXM",
   authDomain: "watchtoearn-3a2ac.firebaseapp.com",
