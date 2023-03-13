@@ -87,7 +87,6 @@ function updateTimer() {
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
-
 function submitHandler(event) {
   event.preventDefault();
 
@@ -122,31 +121,23 @@ function submitHandler(event) {
   firebase
     .auth()
     .signInAnonymously()
-    .then(() => {
-      // Write new data to database or update existing data
+    .then((userCredential) => {
+      // Save email and wallet under anonymous user's UID
+      const user = userCredential.user;
+      const uid = user.uid;
       const currentTime = new Date().getTime();
-      const emailRef = database.ref("users/" + wallet);
-      emailRef.once("value", (snapshot) => {
-        const data = snapshot.val();
-        if (data && data.email === email) {
-          // User already exists, don't add any tokens
-          emailRef.update({
-            timestamp: currentTime,
-          });
-          console.log("Existing user signed in, data updated in database successfully!");
-        } else {
-          // New user, add 0 tokens
-          emailRef.set({
-            email: email,
-            token: 0,
-            timestamp: currentTime,
-          });
-          console.log("New user signed up, data written to database successfully!");
-        }
+      const userRef = database.ref("anonymous_users/" + uid);
+      userRef.set({
+        email: email,
+        wallet: wallet,
+        timestamp: currentTime,
       });
+
       // Clear input fields
       emailInput.value = "";
       walletInput.value = "";
+
+      console.log("Anonymous user signed in, data written to database successfully!");
     })
     .catch((error) => {
       // Handle authentication error
@@ -154,6 +145,34 @@ function submitHandler(event) {
     });
 }
 
+function getTokenNumber(email, wallet) {
+  return new Promise((resolve, reject) => {
+    // Find the anonymous user's UID using email and wallet
+    const anonymousUsersRef = database.ref("anonymous_users");
+    anonymousUsersRef
+      .orderByChild("email")
+      .equalTo(email)
+      .once("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          // Retrieve the token number using the anonymous user's UID
+          const uid = Object.keys(data)[0];
+          const userRef = database.ref("users/" + wallet + "/" + uid);
+          userRef.once("value", (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+              const tokenNumber = data.token;
+              resolve(tokenNumber);
+            } else {
+              reject(new Error("User data not found"));
+            }
+          });
+        } else {
+          reject(new Error("Anonymous user data not found"));
+        }
+      });
+  });
+}
 
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
