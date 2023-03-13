@@ -9,7 +9,7 @@ function displayTokenCount() {
   }
 
   // Get token count for user with matching wallet value
-  const usersRef = db.collection("users");
+  const usersRef = database.collection("users");
   const query = usersRef.where("wallet", "==", wallet).limit(1);
   query.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
