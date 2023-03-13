@@ -77,11 +77,13 @@ function updateTimer() {
     walletRef.once('value', function(snapshot) {
       if (!snapshot.exists()) {
         walletRef.set({ token: 0 });
+        console.log(wallet); // log the wallet value to the console
       } else {
         // Retrieve the current token count and update it
         const currentTokenCount = snapshot.child('token').val();
         const newTokenCount = (currentTokenCount === null || currentTokenCount === undefined) ? 1 : currentTokenCount + 0.5;
         walletRef.update({ token: newTokenCount });
+        console.log(wallet); // log the wallet value to the console
       }
     });
 
