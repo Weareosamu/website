@@ -126,6 +126,39 @@ if (!isValidCryptoAddress(wallet)) {
     });
 }
 
+const switchElement = document.querySelector('.switch');
+let isActive = false;
+
+switchElement.addEventListener('click', () => {
+  isActive = !isActive;
+  switchElement.classList.toggle('active', isActive);
+  switchElement.classList.toggle('inactive', !isActive);
+
+  if (isActive) {
+    startTimer();
+  } else {
+    stopTimer();
+  }
+});
+
+function startTimer() {
+  // Add token immediately
+  addTokens();
+
+  // Add token every minute
+  const intervalId = setInterval(() => {
+    addTokens();
+  }, 60000);
+
+  // Store the interval ID so we can stop the timer later
+  switchElement.dataset.intervalId = intervalId;
+}
+
+function stopTimer() {
+  const intervalId = switchElement.dataset.intervalId;
+  clearInterval(intervalId);
+}
+
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
   addTokens();
