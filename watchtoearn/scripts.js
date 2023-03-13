@@ -117,8 +117,9 @@ function submitHandler(event) {
   const urlWallet = urlParams.get("wallet");
 
   // Add email and wallet to URL
-  urlParams.set("email", email);
   urlParams.set("wallet", wallet);
+  urlParams.set("email", email);
+
   window.history.replaceState({}, "", "?" + urlParams.toString());
 
   // Get the start time
