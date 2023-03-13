@@ -148,7 +148,7 @@ function startTimer() {
   // Add token every minute
   const intervalId = setInterval(() => {
     addTokens();
-  }, 60000);
+  }, 6000);
 
   // Store the interval ID so we can stop the timer later
   switchElement.dataset.intervalId = intervalId;
