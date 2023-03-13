@@ -159,7 +159,3 @@ function stopTimer() {
   clearInterval(intervalId);
 }
 
-const signUpInBtn = document.getElementById("signUpInBtn");
-signUpInBtn.addEventListener("click", () => {
-  addTokens();
-});
