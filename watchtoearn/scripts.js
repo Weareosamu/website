@@ -42,11 +42,7 @@ function addTokensEveryMinute() {
 }
 
 
-const signUpInBtn = document.getElementById("signUpInBtn");
-signUpInBtn.addEventListener("click", () => {
-  addTokensEveryMinute();
-  displayTokenCount();
-});
+
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
@@ -131,3 +127,9 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
+
+const signUpInBtn = document.getElementById("signUpInBtn");
+signUpInBtn.addEventListener("click", () => {
+  addTokensEveryMinute();
+  displayTokenCount();
+});
