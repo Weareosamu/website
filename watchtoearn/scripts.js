@@ -23,70 +23,21 @@ setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 
 ////////////////////////////////////////////////////////////////TIMER
 
-let startTime, elapsedTime, timerInterval;
-
-const form = document.querySelector('#tokenForm');
-const timer = document.querySelector('#timer');
-
-// Extract the wallet parameter from the URL
-const params = new URLSearchParams(window.location.search);
-const walletParam = params.has("wallet") ? params.get("wallet") : null;
-const emailParam = params.has("email") ? params.get("email") : null;
-
-let tokenCount = 0.0;
-let tokenCountElement = document.getElementById('tokenCount');
-
-function updateTimer() {
-  // Get the elapsed time
-  elapsedTime = Date.now() - startTime;
-
-  // Format the time into hours, minutes, and seconds
-  let hours = Math.floor(elapsedTime / 3600000);
-  let minutes = Math.floor((elapsedTime % 3600000) / 60000);
-  let seconds = Math.floor((elapsedTime % 60000) / 1000);
-
-  // Add leading zeros to minutes and seconds if necessary
-  if (minutes < 10) {
-    minutes = '0' + minutes;
-  }
-  if (seconds < 10) {
-    seconds = '0' + seconds;
-  }
-
-  // Update the timer display
-  timer.textContent = `${hours}:${minutes}:${seconds}`;
-
-  // Check if a minute has passed and add 0.5 token if so
-  if (elapsedTime >= 6000) {
-
-    // Update the token count in the Firebase database
-    const wallet = walletParam; // Use the wallet parameter from the URL
-    const email = emailParam; // Use the email parameter from the URL
-
-    if (wallet !== null && email !== null) {
-      const walletRef = database.ref(`users/${wallet}`);
-
-      // Create the wallet section if it doesn't exist yet
-      walletRef.once('value', function(snapshot) {
-        if (!snapshot.exists()) {
-          walletRef.set({ token: 0, email: email });
-          console.log(wallet); // log the wallet value to the console
-        } else {
-          // Retrieve the current token count and update it
-          const currentTokenCount = snapshot.child('token').val();
-          const newTokenCount = (currentTokenCount === null || currentTokenCount === undefined) ? 1 : currentTokenCount + 0.5;
-          walletRef.update({ token: newTokenCount });
-          console.log(wallet); // log the wallet value to the console
-        }
+function addTokensEveryMinute() {
+  // Authenticate anonymously
+  firebase.auth().signInAnonymously().then(() => {
+    setInterval(() => {
+      const uid = firebase.auth().currentUser.uid;
+      const tokenRef = firebase.database().ref("users/" + uid + "/token");
+      tokenRef.transaction((token) => {
+        // Add 0.5 tokens every minute
+        return (token || 0) + 0.5;
       });
-    }
-
-    // Reset the start time
-    startTime += 6000;
-  }
-
-  // Update the token count element in the HTML
-  displayTokenCount();
+    }, 6000); // 1 minute = 60000 milliseconds
+  }).catch((error) => {
+    // Handle authentication error
+    console.log("Authentication failed:", error.message);
+  });
 }
 
 
