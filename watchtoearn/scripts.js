@@ -126,11 +126,12 @@ function displayTokenCount() {
   });
 }
 
-// Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
+
 
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
 setInterval(addTokens, 6000);
+  // Call the displayTokenCount function every 1 minute
+setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 });
 
