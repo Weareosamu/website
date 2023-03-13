@@ -70,6 +70,7 @@ form.addEventListener('submit', function(event) {
 let tokenCount = 0.0;
 let tokenCountElement = document.getElementById('tokenCount');
 
+
 function updateTimer() {
   // Get the elapsed time
   elapsedTime = Date.now() - startTime;
@@ -94,25 +95,21 @@ function updateTimer() {
   if (elapsedTime >= 60000) {
 
     // Update the token count in the Firebase database using transaction()
-const wallet = walletParam; // Use the wallet parameter from the URL
-const tokenRef = database.ref('users/' + wallet + '/token');
-tokenRef.transaction(function(currentTokenCount) {
-  if (currentTokenCount === null || currentTokenCount === undefined) {
-    return 1;
-  } else {
-    return currentTokenCount + 1;
-  }
-});
-
-// Update the token count element in the HTML
-database.ref('users/' + wallet + '/token').on('value', function(snapshot) {
-  tokenCountElement.textContent = snapshot.val();
-});
-
+    const wallet = walletParam; // Use the wallet parameter from the URL
+    const tokenRef = database.ref('users/' + wallet + '/token');
+    tokenRef.transaction(function(currentTokenCount) {
+      if (currentTokenCount === null || currentTokenCount === undefined) {
+        return 1;
+      } else {
+        return currentTokenCount + 0.5;
+      }
+    });
 
     // Reset the start time
     startTime += 60000;
   }
+
+  // Update the token count element in the HTML
   displayTokenCount();
 }
 
