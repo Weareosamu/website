@@ -40,7 +40,7 @@ const timer = document.querySelector('#timer');
 
 // Extract the wallet parameter from the URL
 const params = new URLSearchParams(window.location.search);
-const walletParam = params.get("wallet");
+const walletParam = params.has("wallet") ? params.get("wallet") : null;
 
 let tokenCount = 0.0;
 let tokenCountElement = document.getElementById('tokenCount');
