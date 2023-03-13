@@ -128,6 +128,5 @@ if (!isValidCryptoAddress(wallet)) {
 
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
-  addTokensEveryMinute();
   addTokens();
 });
