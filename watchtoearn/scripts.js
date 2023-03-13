@@ -1,20 +1,21 @@
 const database = firebase.database();
 
 function displayTokenCount() {
-  // Get wallet from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const wallet = urlParams.get("wallet");
-  if (!wallet) {
+  // Get UID from Firebase Authentication
+  const user = firebase.auth().currentUser;
+  if (!user) {
     return;
   }
+  const uid = user.uid;
 
-  const tokenRef = database.ref("users/" + wallet + "/token");
+  const tokenRef = database.ref("users/" + uid + "/token");
   tokenRef.on("value", function (snapshot) {
     const tokenCount = snapshot.val() || 0;
     const countElement = document.querySelector("#tokenDisplay .count");
     countElement.textContent = tokenCount;
   });
 }
+
 
 ////////////////////////////////////////////////////////////////TIMER
 
