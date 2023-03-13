@@ -80,3 +80,32 @@ p {
 #tokenDisplay .emoji {
   font-size: 24px;
 }
+
+.switch {
+  position: relative;
+  width: 100px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: grey;
+}
+
+.circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.switch.active .circle {
+  transform: translateX(50px);
+}
+
+.switch.inactive .circle {
+  transform: translateX(0);
+}
+
