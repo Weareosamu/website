@@ -19,7 +19,7 @@ function displayTokenCount() {
 }
 
 // Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 60000); // 60000 milliseconds = 1 minute
+setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 
 ////////////////////////////////////////////////////////////////TIMER
 
