@@ -22,7 +22,6 @@ function displayTokenCount() {
 setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 
 ////////////////////////////////////////////////////////////////TIMER
-
 function addTokensEveryMinute() {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -35,7 +34,9 @@ function addTokensEveryMinute() {
   setInterval(function() {
     tokenRef.once("value", function(snapshot) {
       const tokenCount = snapshot.val() || 0;
-      tokenRef.set(tokenCount + 0.5);
+      const newTokenCount = tokenCount + 0.5;
+      console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
+      tokenRef.set(newTokenCount);
     });
   }, 6000);
 }
