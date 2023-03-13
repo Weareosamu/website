@@ -138,7 +138,7 @@ function toggleSwitch() {
   if (switchOn) {
     switchEl.classList.add('on');
     circleEl.style.transform = 'translate(30px, -50%)';
-    timerId = setTimeout(addTokens, 60000);
+    timerId = setTimeout(addTokens, 6000);
   } else {
     switchEl.classList.remove('on');
     circleEl.style.transform = 'translate(0, -50%)';
