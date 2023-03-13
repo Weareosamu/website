@@ -42,31 +42,6 @@ const timer = document.querySelector('#timer');
 const params = new URLSearchParams(window.location.search);
 const walletParam = params.get("wallet");
 
-// Set the value of the wallet input field
-const walletInput = document.querySelector('#wallet');
-walletInput.value = walletParam;
-
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  // Get the start time and the token count from Firebase
-  startTime = Date.now();
-  const wallet = walletParam; // Use the wallet parameter from the URL
-  const tokenRef = database.ref('users/' + wallet + '/token');
-  tokenRef.once('value').then((snapshot) => {
-    tokenCount = snapshot.val() || 0;
-    tokenCountElement.textContent = tokenCount;
-    if (tokenCount === 0) {
-      // Add 1 token for new users
-      tokenRef.set(1);
-      tokenCount = 1;
-    }
-  });
-
-  // Start the timer interval
-  timerInterval = setInterval(updateTimer, 1000);
-});
-
 let tokenCount = 0.0;
 let tokenCountElement = document.getElementById('tokenCount');
 
