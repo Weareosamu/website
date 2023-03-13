@@ -21,7 +21,7 @@ function displayTokenCount() {
     console.log("Error getting token count:", error);
   });
 }
-setInterval(displayTokenCount, 60000);
+setInterval(displayTokenCount, 6000);
 
 ////////////////////////////////////////////////////////////////TIMER
 
