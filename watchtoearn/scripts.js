@@ -106,38 +106,47 @@ function submitHandler(event) {
   const urlEmail = urlParams.get("email");
   const urlWallet = urlParams.get("wallet");
 
+  // Show confirmation window if email and wallet were previously set
+  if (urlEmail && urlWallet) {
+    const confirmation = confirm("Are you sure you want to update your email and wallet?");
+    if (!confirmation) {
+      // Clear input fields and return
+      emailInput.value = "";
+      walletInput.value = "";
+      return;
+    }
+  }
+
   // Add email and wallet to URL
   urlParams.set("wallet", wallet);
   urlParams.set("email", email);
 
   window.history.replaceState({}, "", "?" + urlParams.toString());
 
-  // Get the start time
-  startTime = Date.now();
-  // Start the timer interval
-  timerInterval = setInterval(updateTimer, 1000);
-
-  // Authenticate anonymously
-  firebase
-    .auth()
-    .signInAnonymously()
+  // Get anonymous user id
+  let userId;
+  firebase.auth().signInAnonymously()
     .then((userCredential) => {
-      // Save email and wallet under anonymous user's UID
-      const user = userCredential.user;
-      const uid = user.uid;
-      const currentTime = new Date().getTime();
-      const userRef = database.ref("anonymous_users/" + uid);
-      userRef.set({
-        email: email,
-        wallet: wallet,
-        timestamp: currentTime,
+      userId = userCredential.user.uid;
+      const emailRef = database.ref(`users/${userId}`);
+      emailRef.once("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.email === email && data.wallet === wallet) {
+          // User already exists, don't add any tokens
+          console.log("Existing user signed in, data exists in database already!");
+        } else {
+          // New user or update user, add 0 tokens
+          emailRef.set({
+            email: email,
+            wallet: wallet,
+            token: 0,
+          });
+          console.log("User signed up or data updated in database successfully!");
+        }
       });
-
       // Clear input fields
       emailInput.value = "";
       walletInput.value = "";
-
-      console.log("Anonymous user signed in, data written to database successfully!");
     })
     .catch((error) => {
       // Handle authentication error
@@ -145,34 +154,6 @@ function submitHandler(event) {
     });
 }
 
-function getTokenNumber(email, wallet) {
-  return new Promise((resolve, reject) => {
-    // Find the anonymous user's UID using email and wallet
-    const anonymousUsersRef = database.ref("anonymous_users");
-    anonymousUsersRef
-      .orderByChild("email")
-      .equalTo(email)
-      .once("value", (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          // Retrieve the token number using the anonymous user's UID
-          const uid = Object.keys(data)[0];
-          const userRef = database.ref("users/" + wallet + "/" + uid);
-          userRef.once("value", (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const tokenNumber = data.token;
-              resolve(tokenNumber);
-            } else {
-              reject(new Error("User data not found"));
-            }
-          });
-        } else {
-          reject(new Error("Anonymous user data not found"));
-        }
-      });
-  });
-}
 
 
 const submitBtn = document.querySelector('#tokenForm input[type="submit"]');
