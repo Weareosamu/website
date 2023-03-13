@@ -1,5 +1,44 @@
 const database = firebase.database();
 
+// Define the displayTokenCount function
+function displayTokenCount() {
+  // Get the user ID from the Firebase Authentication object
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+
+  const tokenRef = database.ref("users/" + uid + "/token");
+  tokenRef.on("value", function (snapshot) {
+    const tokenCount = snapshot.val() || 0;
+    const countElement = document.querySelector("#tokenDisplay .count");
+    countElement.textContent = tokenCount;
+  });
+}
+
+  // Call the displayTokenCount function every 1 minute
+//setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
+
+////////////////////////////////////////////////////////////////TIMER
+function addTokens() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+  const tokenRef = database.ref("users/" + uid + "/token");
+
+  tokenRef.transaction(function(currentTokenCount) {
+    const newTokenCount = (currentTokenCount || 0) + 0.5;
+    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
+    return newTokenCount;
+  });
+}
+////////////////////////////////////////////////////////////////TIMEREND
+
 
 function isValidCryptoAddress(address) {
   // Regular expression that matches Bitcoin, Ethereum, and other cryptocurrency addresses
@@ -82,45 +121,3 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
-
-
-
-// Define the displayTokenCount function
-function displayTokenCount() {
-  // Get the user ID from the Firebase Authentication object
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
-
-  const uid = user.uid;
-
-  const tokenRef = database.ref("users/" + uid + "/token");
-  tokenRef.on("value", function (snapshot) {
-    const tokenCount = snapshot.val() || 0;
-    const countElement = document.querySelector("#tokenDisplay .count");
-    countElement.textContent = tokenCount;
-  });
-}
-
-  // Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
-
-////////////////////////////////////////////////////////////////TIMER
-function addTokens() {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
-
-  const uid = user.uid;
-  const tokenRef = database.ref("users/" + uid + "/token");
-
-  tokenRef.transaction(function(currentTokenCount) {
-    const newTokenCount = (currentTokenCount || 0) + 0.5;
-    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
-    return newTokenCount;
-  });
-}
-////////////////////////////////////////////////////////////////TIMEREND
-
