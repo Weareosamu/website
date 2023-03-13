@@ -70,15 +70,25 @@ function updateTimer() {
   if (elapsedTime >= 60000) {
 
     // Update the token count in the Firebase database using transaction()
-    const wallet = walletParam; // Use the wallet parameter from the URL
-    const tokenRef = database.ref('users/' + wallet + '/token');
-    tokenRef.transaction(function(currentTokenCount) {
-      if (currentTokenCount === null || currentTokenCount === undefined) {
-        return 1;
-      } else {
-        return currentTokenCount + 0.5;
-      }
-    });
+const wallet = walletParam; // Use the wallet parameter from the URL
+const walletRef = database.ref('users/' + wallet);
+
+// Create the wallet section if it doesn't exist yet
+walletRef.once('value', function(snapshot) {
+  if (!snapshot.exists()) {
+    walletRef.set({ token: 0 });
+  }
+});
+
+const tokenRef = walletRef.child('token');
+tokenRef.transaction(function(currentTokenCount) {
+  if (currentTokenCount === null || currentTokenCount === undefined) {
+    return 1;
+  } else {
+    return currentTokenCount + 0.5;
+  }
+});
+
 
     // Reset the start time
     startTime += 60000;
