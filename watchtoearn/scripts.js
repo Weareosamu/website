@@ -39,10 +39,10 @@ const timer = document.querySelector('#timer');
 // Extract the wallet parameter from the URL
 const params = new URLSearchParams(window.location.search);
 const walletParam = params.has("wallet") ? params.get("wallet") : null;
+const emailParam = params.has("email") ? params.get("email") : null;
 
 let tokenCount = 0.0;
 let tokenCountElement = document.getElementById('tokenCount');
-
 
 function updateTimer() {
   // Get the elapsed time
@@ -69,21 +69,25 @@ function updateTimer() {
 
     // Update the token count in the Firebase database
     const wallet = walletParam; // Use the wallet parameter from the URL
-    const walletRef = database.ref('users/' + wallet);
+    const email = emailParam; // Use the email parameter from the URL
 
-    // Create the wallet section if it doesn't exist yet
-    walletRef.once('value', function(snapshot) {
-      if (!snapshot.exists()) {
-        walletRef.set({ token: 0 });
-        console.log(wallet); // log the wallet value to the console
-      } else {
-        // Retrieve the current token count and update it
-        const currentTokenCount = snapshot.child('token').val();
-        const newTokenCount = (currentTokenCount === null || currentTokenCount === undefined) ? 1 : currentTokenCount + 0.5;
-        walletRef.update({ token: newTokenCount });
-        console.log(wallet); // log the wallet value to the console
-      }
-    });
+    if (wallet !== null && email !== null) {
+      const walletRef = database.ref(`users/${wallet}`);
+
+      // Create the wallet section if it doesn't exist yet
+      walletRef.once('value', function(snapshot) {
+        if (!snapshot.exists()) {
+          walletRef.set({ token: 0, email: email });
+          console.log(wallet); // log the wallet value to the console
+        } else {
+          // Retrieve the current token count and update it
+          const currentTokenCount = snapshot.child('token').val();
+          const newTokenCount = (currentTokenCount === null || currentTokenCount === undefined) ? 1 : currentTokenCount + 0.5;
+          walletRef.update({ token: newTokenCount });
+          console.log(wallet); // log the wallet value to the console
+        }
+      });
+    }
 
     // Reset the start time
     startTime += 6000;
