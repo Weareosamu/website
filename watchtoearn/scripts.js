@@ -33,6 +33,16 @@ function addTokensEveryMinute() {
         // Add 0.5 tokens every minute
         return (token || 0) + 0.5;
       });
+      
+       // Update the timer every second
+  totalMilliseconds += 1000;
+  const hours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
+  const minutes = Math.floor((totalMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((totalMilliseconds % (1000 * 60)) / 1000);
+  const timerElement = document.getElementById("timer");
+  timerElement.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+}, 1000); // 1 second = 1000 milliseconds
+      
     }, 6000); // 1 minute = 60000 milliseconds
   }).catch((error) => {
     // Handle authentication error
