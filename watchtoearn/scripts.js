@@ -24,29 +24,22 @@ setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
 ////////////////////////////////////////////////////////////////TIMER
 
 function addTokensEveryMinute() {
-  // Authenticate anonymously
-  firebase.auth().signInAnonymously().then(() => {
-    setInterval(() => {
-      const uid = firebase.auth().currentUser.uid;
-      const tokenRef = firebase.database().ref("users/" + uid + "/token");
-      tokenRef.transaction((token) => {
-        // Add 0.5 tokens every minute
-        return (token || 0) + 0.5;
-      });
- // Update the timer every second
-  totalMilliseconds += 1000;
-  const hours = Math.floor(totalMilliseconds / (1000 * 60 * 60));
-  const minutes = Math.floor((totalMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((totalMilliseconds % (1000 * 60)) / 1000);
-  const timerElement = document.getElementById("timer");
-  timerElement.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-}, 1000); // 1 second = 1000 milliseconds
-    
-  }).catch((error) => {
-    // Handle authentication error
-    console.log("Authentication failed:", error.message);
-  });
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+  const tokenRef = database.ref("users/" + uid + "/token");
+
+  setInterval(function() {
+    tokenRef.once("value", function(snapshot) {
+      const tokenCount = snapshot.val() || 0;
+      tokenRef.set(tokenCount + 0.5);
+    });
+  }, 6000);
 }
+
 
 const signUpInBtn = document.getElementById("signUpInBtn");
 signUpInBtn.addEventListener("click", () => {
