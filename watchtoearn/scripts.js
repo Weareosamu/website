@@ -1,18 +1,24 @@
 const database = firebase.database();
 
 function displayTokenCount() {
-  // Get UID from Firebase Authentication
-  const user = firebase.auth().currentUser;
-  if (!user) {
+  // Get wallet from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const wallet = urlParams.get("wallet");
+  if (!wallet) {
     return;
   }
-  const uid = user.uid;
 
-  const tokenRef = database.ref("users/" + uid + "/token");
-  tokenRef.on("value", function (snapshot) {
-    const tokenCount = snapshot.val() || 0;
-    const countElement = document.querySelector("#tokenDisplay .count");
-    countElement.textContent = tokenCount;
+  // Get token count for user with matching wallet value
+  const usersRef = db.collection("users");
+  const query = usersRef.where("wallet", "==", wallet).limit(1);
+  query.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      const tokenCount = doc.data().token || 0;
+      const countElement = document.querySelector("#tokenDisplay .count");
+      countElement.textContent = tokenCount;
+    });
+  }).catch(function(error) {
+    console.log("Error getting token count:", error);
   });
 }
 
