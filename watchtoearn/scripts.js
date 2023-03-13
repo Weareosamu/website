@@ -65,7 +65,7 @@ function updateTimer() {
   timer.textContent = `${hours}:${minutes}:${seconds}`;
 
   // Check if a minute has passed and add 0.5 token if so
-  if (elapsedTime >= 60000) {
+  if (elapsedTime >= 6000) {
 
     // Update the token count in the Firebase database
     const wallet = walletParam; // Use the wallet parameter from the URL
@@ -86,7 +86,7 @@ function updateTimer() {
     });
 
     // Reset the start time
-    startTime += 60000;
+    startTime += 6000;
   }
 
   // Update the token count element in the HTML
