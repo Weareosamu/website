@@ -126,6 +126,9 @@ if (!isValidCryptoAddress(wallet)) {
     });
 }
 
+ const form = document.querySelector("#my-form");
+  form.addEventListener("submit", submitHandler);
+
 function startTimer() {
   const timerElement = document.querySelector("#timer");
   let seconds = 0;
@@ -159,6 +162,7 @@ function startTimer() {
     clearInterval(timerInterval);
   }
 }
+// Example usage:
+const stopTimer = startTimer();
+setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
 
- const form = document.querySelector("#my-form");
-  form.addEventListener("submit", submitHandler);
