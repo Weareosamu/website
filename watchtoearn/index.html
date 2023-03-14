@@ -32,6 +32,27 @@
 
 	<p><span id="timer">00:00:00</span></p>
 
+	<script>
+function displayPopup() {
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'block';
+}
+
+function useExisting() {
+  // use existing wallet address
+  // perform the necessary operations here
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'none';
+}
+
+function provideNew() {
+  // provide new wallet address
+  // perform the necessary operations here
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'none';
+}
+</script>
+	
 <button id="collect-tokens-btn" onclick="displayPopup()">Collect My Tokens</button>
 
 <div id="popup-container" class="popup-container" style="display: none;">
