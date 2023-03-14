@@ -243,6 +243,8 @@ if (!isValidCryptoAddress(wallet)) {
       // Clear input fields
       emailInput.value = "";
       walletInput.value = "";
+      emailInput.style.display = 'none';
+      walletInput.style.display = 'none';
     })
     .catch((error) => {
       // Handle authentication error
