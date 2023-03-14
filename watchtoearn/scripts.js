@@ -280,6 +280,7 @@ collectTokensBtn.onclick = function() {
     const lastSubmitDate = snapshot.child('last_submit_date').val();
     const submitCount = snapshot.child('submit_count').val() || 0;
     const maxtokens = snapshot.child('token').val();
+    const maxtokens = snapshot.child('token').val();
     
     if (wallet !== walletParam) {
       alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
@@ -291,7 +292,7 @@ collectTokensBtn.onclick = function() {
       return;
     }
 
-    const tokenCount = prompt('Please enter your token count (${maxtokens}):');
+    const tokenCount = prompt(`Please enter your token count (maximum ${maxtokens}):`);
     if (!tokenCount || tokenCount > maxtokens) {
       return;
     }
