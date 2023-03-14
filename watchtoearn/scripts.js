@@ -255,13 +255,15 @@ const wallet = urlParams.get('wallet');
 
 // If email and wallet parameters are present in the URL, display them inside the form
 if (email && wallet) {
-  const emailDisplay = document.createElement('p');
-  emailDisplay.textContent = `Email: ${email}`;
-  form.appendChild(emailDisplay);
+const emailDisplay = document.createElement('p');
+emailDisplay.textContent = `Email: ${email}`;
+emailDisplay.classList.add('centered'); // add a CSS class to the element
+form.appendChild(emailDisplay);
 
-  const walletDisplay = document.createElement('p');
-  walletDisplay.textContent = `Wallet: ${wallet}`;
-  form.appendChild(walletDisplay);
+const walletDisplay = document.createElement('p');
+walletDisplay.textContent = `Wallet: ${wallet}`;
+walletDisplay.classList.add('centered'); // add a CSS class to the element
+form.appendChild(walletDisplay);
 }
     
     })
