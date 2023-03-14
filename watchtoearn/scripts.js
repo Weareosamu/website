@@ -37,11 +37,18 @@ function updateSubmitButtonText() {
 
 
 
+const TIMER_KEY = "my-timer";
+
 function startTimer() {
   const timerElement = document.querySelector("#timer");
-  let seconds = 0;
-  let minutes = 0;
-  let hours = 0;
+
+  // Get the previous timer value from localStorage
+  let prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
+  let elapsedTime = prevTime;
+
+  let seconds = elapsedTime % 60;
+  let minutes = Math.floor(elapsedTime / 60) % 60;
+  let hours = Math.floor(elapsedTime / (60 * 60));
 
   // Update the timer element with the current time
   function updateTimer() {
@@ -55,6 +62,10 @@ function startTimer() {
       }
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+
+    // Save the current timer value to localStorage
+    let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+    localStorage.setItem(TIMER_KEY, currentTime.toString());
   }
 
   // Pad a number with leading zeros if it is less than 10
@@ -63,13 +74,34 @@ function startTimer() {
   }
 
   // Start the timer and update the timer element every second
-  const timerInterval = setInterval(updateTimer, 1000);
+  let timerInterval = setInterval(updateTimer, 1000);
+
+  // Handle visibility changes
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "hidden") {
+      // The page is hidden, save the timer state
+      clearInterval(timerInterval);
+      let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+      localStorage.setItem(TIMER_KEY, currentTime.toString());
+    } else {
+      // The page is visible again, restore the timer state
+      prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
+      elapsedTime = prevTime;
+      seconds = elapsedTime % 60;
+      minutes = Math.floor(elapsedTime / 60) % 60;
+      hours = Math.floor(elapsedTime / (60 * 60));
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+  });
 
   // Return a function that stops the timer when called
   return function stopTimer() {
     clearInterval(timerInterval);
   }
 }
+
+
+
 // Define the displayTokenCount function
 function displayTokenCount() {
   // Get the user ID from the Firebase Authentication object
