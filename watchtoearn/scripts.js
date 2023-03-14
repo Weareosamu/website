@@ -317,7 +317,7 @@ function sendTokenCount(wallet) {
 
   // set API endpoint URL and API key
   const url = 'https://api.web3forms.com/submit';
-  const apiKey = 'YOUR_API_KEY_HERE';
+  const apiKey = 'ac277651-75f6-42dc-aadd-33f4fba88a06';
 
   // set form data
   const formData = new FormData();
