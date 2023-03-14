@@ -317,7 +317,7 @@ collectTokensBtn.onclick = function() {
         const now = Date.now();
         db.update({
           submit_count: submitCount + 1,
-          last_submit_date: now
+          last_submit_date: now,
           token: snapshot.child('token').val() - tokenCount
         });
       } else {
