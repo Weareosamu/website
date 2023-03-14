@@ -258,5 +258,24 @@ setInterval(displayTokenCount, 1000);
 startTimer(addTokens); 
 }
 
+function displayPopup() {
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'block';
+}
+
+function useExisting() {
+  // use existing wallet address
+  // perform the necessary operations here
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'none';
+}
+
+function provideNew() {
+  // provide new wallet address
+  // perform the necessary operations here
+  const popupContainer = document.getElementById('popup-container');
+  popupContainer.style.display = 'none';
+}
+
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
