@@ -169,8 +169,8 @@ if (!isValidCryptoAddress(wallet)) {
 const stopTimer = startTimer();
 //setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
      // Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 6000);
-setInterval(addTokens, 6000); 
+setInterval(displayTokenCount, 60000);
+setInterval(addTokens, 60000); 
 }
 
  const form = document.querySelector("#my-form");
