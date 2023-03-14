@@ -121,3 +121,5 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
+ const form = document.querySelector("#my-form");
+  form.addEventListener("submit", submitHandler);
