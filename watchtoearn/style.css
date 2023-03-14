@@ -81,3 +81,16 @@ p {
   font-size: 24px;
 }
 
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #ee3769;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #b82f5b;
+}
+
