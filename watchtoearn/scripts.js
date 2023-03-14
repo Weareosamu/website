@@ -258,7 +258,8 @@ setInterval(displayTokenCount, 1000);
 startTimer(addTokens); 
 }
 
-function collectTokens() {
+const collectTokensBtn = document.getElementById('collect-tokens-btn');
+collectTokensBtn.onclick = function() {
   const choice = prompt('Do you want to use your existing wallet address or provide a new one?\n\nType "existing" or "new".');
   
   if (choice === 'existing') {
