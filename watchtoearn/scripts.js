@@ -248,20 +248,20 @@ if (!isValidCryptoAddress(wallet)) {
       walletInput.style.display = 'none';
       submitBtn.style.display = 'none';
     
-    // Get the email and wallet parameters from the URL
+// Get the email and wallet parameters from the URL
 const urlParams = new URLSearchParams(window.location.search);
 const email = urlParams.get('email');
 const wallet = urlParams.get('wallet');
 
-// If email and wallet parameters are present in the URL, display them on the page
+// If email and wallet parameters are present in the URL, display them inside the form
 if (email && wallet) {
   const emailDisplay = document.createElement('p');
   emailDisplay.textContent = `Email: ${email}`;
-  document.body.appendChild(emailDisplay);
+  form.appendChild(emailDisplay);
 
   const walletDisplay = document.createElement('p');
   walletDisplay.textContent = `Wallet: ${wallet}`;
-  document.body.appendChild(walletDisplay);
+  form.appendChild(walletDisplay);
 }
     
     })
