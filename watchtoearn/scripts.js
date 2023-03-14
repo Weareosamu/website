@@ -119,7 +119,7 @@ if (!isValidCryptoAddress(wallet)) {
 
   // Show confirmation window if email and wallet were previously set
   if (urlEmail && urlWallet) {
-    const confirmation = confirm("Are you sure you want to update your email and wallet?");
+    const confirmation = confirm("Are you sure you want to update your email and wallet? WARNING! If you update it you lose all the tokens you earned before!");
     if (!confirmation) {
       // Clear input fields and return
       emailInput.value = "";
