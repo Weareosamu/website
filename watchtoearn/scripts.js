@@ -21,7 +21,7 @@ function updateSubmitButtonText() {
       // Create a new "Log Out" button element
       const logoutButton = document.createElement("button");
       logoutButton.innerText = "Log Out";
-      logoutButton.classList.add("button");
+      logoutButton.classList.add("button-logout");
       logoutButton.addEventListener("click", function() {
         // Remove the "wallet" parameter from the URL and reload the page
         const url = new URL(window.location.href);
