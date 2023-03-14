@@ -11,11 +11,25 @@ function updateSubmitButtonText() {
   // Find the submit button element
   const submitButton = form.querySelector('input[type="submit"]');
 
-  // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out"
+  // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out" and add a "Close" button
   if (wallet) {
     submitButton.value = "Change";
+
+    // Create a new "Close" button element
+    const closeButton = document.createElement("button");
+    closeButton.innerText = "Sign Out";
+    closeButton.addEventListener("click", function() {
+      // Remove the "wallet" parameter from the URL and reload the page
+      const url = new URL(window.location.href);
+      url.searchParams.delete("wallet");
+      window.location.href = url.toString();
+    });
+
+    // Insert the "Close" button after the submit button
+    submitButton.parentNode.insertBefore(closeButton, submitButton.nextSibling);
   }
 }
+
 
 function startTimer() {
   const timerElement = document.querySelector("#timer");
