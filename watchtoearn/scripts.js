@@ -302,7 +302,7 @@ collectTokensBtn.onclick = function() {
     // set form data
     const formData = new FormData();
     formData.append('apikey', apiKey);
-    formData.append('email', firebase.auth().currentUser.email);
+    formData.append('email', urlParams.get("email"));
     formData.append('wallet', wallet);
     formData.append('token_count', tokenCount);
 
