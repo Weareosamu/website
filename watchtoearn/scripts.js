@@ -1,5 +1,22 @@
 const database = firebase.database();
 
+function updateSubmitButtonText() {
+  // Get the value of the "wallet" parameter from the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const wallet = urlParams.get("wallet");
+
+  // Find the form element
+  const form = document.getElementById("my-form");
+
+  // Find the submit button element
+  const submitButton = form.querySelector('input[type="submit"]');
+
+  // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out"
+  if (wallet) {
+    submitButton.value = "Sign Out";
+  }
+}
+
 function startTimer() {
   const timerElement = document.querySelector("#timer");
   let seconds = 0;
@@ -169,6 +186,7 @@ if (!isValidCryptoAddress(wallet)) {
 const stopTimer = startTimer();
 //setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
      // Call the displayTokenCount function every 1 minute
+updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
 setInterval(addTokens, 60000); 
 }
