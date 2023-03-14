@@ -20,7 +20,7 @@
 </div>
 	
 	<h1>Watch to Earn</h1>
-	<form id="tokenForm">
+	<form id="my-form">
 		<input type="email" id="email" name="email" required placeholder="Your email"><br><br>
 
 		<input type="text" id="wallet" name="wallet" required placeholder="Your wallet address"><br><br>
@@ -44,6 +44,11 @@ const firebaseConfig = {
   measurementId: "G-L809K7DPGK"
 };
       firebase.initializeApp(firebaseConfig);
+		
+</script>
+	<script>
+  const form = document.querySelector("#my-form");
+  form.addEventListener("submit", submitHandler);
 </script>
 	<script type="module" src="scripts.js"></script>
 </body>
