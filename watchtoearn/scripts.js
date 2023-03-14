@@ -260,7 +260,9 @@ startTimer(addTokens);
 }
 
 ////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
+
 const collectTokensBtn = document.getElementById('collect-tokens-btn');
+
 collectTokensBtn.onclick = function() {
   const urlParams = new URLSearchParams(window.location.search);
   const walletParam = urlParams.get('wallet');
@@ -273,47 +275,40 @@ collectTokensBtn.onclick = function() {
   const uid = firebase.auth().currentUser.uid;
   const db = firebase.database().ref('users/' + uid);
 
-  const choice = prompt('Do you want to use your existing wallet address or provide a new one?\n\nType "existing" or "new".');
+  db.once('value').then(function(snapshot) {
+    const wallet = snapshot.child('wallet').val();
+    const maxTokenCount = snapshot.child('token').val(); // get max token count from database
 
-  if (choice === 'existing') {
-    db.once('value').then(function(snapshot) {
-      const wallet = snapshot.child('wallet').val();
-      if (wallet === walletParam) {
-        alert(`Your current wallet address is ${wallet}.`);
+    if (wallet === walletParam) {
+      alert(`Your current wallet address is ${wallet}.`);
 
-        // send token count to web3forms.com API
-        sendTokenCount(wallet);
-      } else {
-        alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
+      // ask user for token count
+      const tokenCount = parseInt(prompt(`Please enter the number of tokens you want to collect (maximum: ${maxTokenCount}):`));
+
+      if (isNaN(tokenCount)) {
+        alert('Error: Invalid token count.');
+        return;
       }
-    }).catch(function(error) {
-      alert(`Error: ${error.message}`);
-    });
-  } else if (choice === 'new') {
-    const oldWallet = prompt('Please enter your current wallet address:');
-    const email = prompt('Please enter your email address:');
-    const newWallet = prompt('Please enter your new wallet address:');
 
-    db.once('value').then(function(snapshot) {
-      const wallet = snapshot.child('wallet').val();
-      if (wallet === oldWallet) {
-        alert(`Your new wallet address (${newWallet}) has been saved.`);
-
-        // send token count to web3forms.com API
-        sendTokenCount(newWallet);
-      } else {
-        alert('Error: The current wallet address you entered does not match your saved wallet address.');
+      if (tokenCount > maxTokenCount) { // check if token count exceeds max token count
+        alert(`Error: You can only collect up to ${maxTokenCount} tokens.`);
+        return;
       }
-    }).catch(function(error) {
-      alert(`Error: ${error.message}`);
-    });
-  } else {
-    alert('Invalid choice. Please type "existing" or "new".');
-  }
+
+      // send token count to web3forms.com API
+      sendTokenCount(wallet, tokenCount);
+    } else {
+      alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
+    }
+  }).catch(function(error) {
+    alert(`Error: ${error.message}`);
+  });
 }
 
-function sendTokenCount(wallet) {
-  const tokenCount = prompt('Please enter your token count:');
+function sendTokenCount(wallet, tokenCount) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const emailParam = urlParams.get('email');
+  const email = emailParam ? emailParam : firebase.auth().currentUser.email; // get email from URL parameter or Firebase Auth
 
   // set API endpoint URL and API key
   const url = 'https://api.web3forms.com/submit';
@@ -322,7 +317,7 @@ function sendTokenCount(wallet) {
   // set form data
   const formData = new FormData();
   formData.append('apikey', apiKey);
-  formData.append('email', firebase.auth().currentUser.email);
+  formData.append('email', email);
   formData.append('wallet', wallet);
   formData.append('token_count', tokenCount);
 
@@ -341,6 +336,7 @@ function sendTokenCount(wallet) {
     console.error(error);
   });
 }
+
 
 ////////////////////////////////////////////////////////////////////////////// SEND EMAIL END
 
