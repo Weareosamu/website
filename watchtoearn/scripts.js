@@ -13,11 +13,11 @@ function updateSubmitButtonText() {
 
   // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out" and add a "Close" button
   if (wallet) {
-    submitButton.value = "Sign Out";
+    submitButton.value = "Submit Change";
 
     // Create a new "Close" button element
     const closeButton = document.createElement("button");
-    closeButton.innerText = "Close";
+    closeButton.innerText = "Log Out";
     closeButton.classList.add("button"); // add the "button" class to the new button
     closeButton.addEventListener("click", function() {
       // Remove the "wallet" parameter from the URL and reload the page
