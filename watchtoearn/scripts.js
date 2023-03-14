@@ -262,20 +262,20 @@ const collectTokensBtn = document.getElementById('collect-tokens-btn');
 collectTokensBtn.onclick = function() {
   const urlParams = new URLSearchParams(window.location.search);
   const walletParam = urlParams.get('wallet');
-  
+
   if (!walletParam) {
     alert('Error: No wallet parameter found in the URL.');
     return;
   }
-  
+
   const uid = firebase.auth().currentUser.uid;
-  const db = firebase.firestore();
-  
+  const db = firebase.database().ref('users/' + uid);
+
   const choice = prompt('Do you want to use your existing wallet address or provide a new one?\n\nType "existing" or "new".');
-  
+
   if (choice === 'existing') {
-    db.collection('users').doc(uid).get().then(function(doc) {
-      const wallet = doc.data().wallet;
+    db.once('value').then(function(snapshot) {
+      const wallet = snapshot.child('wallet').val();
       if (wallet === walletParam) {
         alert(`Your current wallet address is ${wallet}.`);
       } else {
@@ -288,9 +288,9 @@ collectTokensBtn.onclick = function() {
     const oldWallet = prompt('Please enter your current wallet address:');
     const email = prompt('Please enter your email address:');
     const newWallet = prompt('Please enter your new wallet address:');
-    
-    db.collection('users').doc(uid).get().then(function(doc) {
-      const wallet = doc.data().wallet;
+
+    db.once('value').then(function(snapshot) {
+      const wallet = snapshot.child('wallet').val();
       if (wallet === oldWallet) {
         alert(`Your new wallet address (${newWallet}) has been saved.`);
       } else {
@@ -303,6 +303,7 @@ collectTokensBtn.onclick = function() {
     alert('Invalid choice. Please type "existing" or "new".');
   }
 }
+
 
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
