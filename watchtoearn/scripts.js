@@ -247,6 +247,23 @@ if (!isValidCryptoAddress(wallet)) {
       emailInput.style.display = 'none';
       walletInput.style.display = 'none';
       submitBtn.style.display = 'none';
+    
+    // Get the email and wallet parameters from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const email = urlParams.get('email');
+const wallet = urlParams.get('wallet');
+
+// If email and wallet parameters are present in the URL, display them on the page
+if (email && wallet) {
+  const emailDisplay = document.createElement('p');
+  emailDisplay.textContent = `Email: ${email}`;
+  document.body.appendChild(emailDisplay);
+
+  const walletDisplay = document.createElement('p');
+  walletDisplay.textContent = `Wallet: ${wallet}`;
+  document.body.appendChild(walletDisplay);
+}
+    
     })
     .catch((error) => {
       // Handle authentication error
