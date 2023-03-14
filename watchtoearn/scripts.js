@@ -125,5 +125,40 @@ if (!isValidCryptoAddress(wallet)) {
       console.log("Authentication failed:", error.message);
     });
 }
+
+function startTimer() {
+  const timerElement = document.querySelector("#timer");
+  let seconds = 0;
+  let minutes = 0;
+  let hours = 0;
+
+  // Update the timer element with the current time
+  function updateTimer() {
+    seconds++;
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+      if (minutes >= 60) {
+        minutes = 0;
+        hours++;
+      }
+    }
+    timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+  }
+
+  // Pad a number with leading zeros if it is less than 10
+  function padNumber(number) {
+    return number < 10 ? `0${number}` : number;
+  }
+
+  // Start the timer and update the timer element every second
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  // Return a function that stops the timer when called
+  return function stopTimer() {
+    clearInterval(timerInterval);
+  }
+}
+
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
