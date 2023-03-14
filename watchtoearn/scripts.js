@@ -13,7 +13,7 @@ function updateSubmitButtonText() {
 
   // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out"
   if (wallet) {
-    submitButton.value = "Sign Out";
+    submitButton.value = "Change";
   }
 }
 
