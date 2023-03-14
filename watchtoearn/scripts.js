@@ -11,25 +11,30 @@ function updateSubmitButtonText() {
   // Find the submit button element
   const submitButton = form.querySelector('input[type="submit"]');
 
-  // If the "wallet" parameter is present in the URL, change the text of the button to "Sign Out" and add a "Close" button
+  // If the "wallet" parameter is present in the URL, change the text of the button to "Submit Change" and add a "Log Out" button
   if (wallet) {
     submitButton.value = "Submit Change";
 
-    // Create a new "Close" button element
-    const closeButton = document.createElement("button");
-    closeButton.innerText = "Log Out";
-    closeButton.classList.add("button"); // add the "button" class to the new button
-    closeButton.addEventListener("click", function() {
-      // Remove the "wallet" parameter from the URL and reload the page
-      const url = new URL(window.location.href);
-      url.searchParams.delete("wallet");
-      window.location.href = url.toString();
-    });
+    // Check if the "Log Out" button already exists
+    const logoutButton = form.querySelector('button.button-logout');
+    if (!logoutButton) {
+      // Create a new "Log Out" button element
+      const logoutButton = document.createElement("button");
+      logoutButton.innerText = "Log Out";
+      logoutButton.classList.add("button-logout"); // add the "button-logout" class to the new button
+      logoutButton.addEventListener("click", function() {
+        // Remove the "wallet" parameter from the URL and reload the page
+        const url = new URL(window.location.href);
+        url.searchParams.delete("wallet");
+        window.location.href = url.toString();
+      });
 
-    // Insert the "Close" button after the submit button
-    submitButton.parentNode.insertBefore(closeButton, submitButton.nextSibling);
+      // Insert the "Log Out" button after the submit button
+      submitButton.parentNode.insertBefore(logoutButton, submitButton.nextSibling);
+    }
   }
 }
+
 
 
 function startTimer() {
