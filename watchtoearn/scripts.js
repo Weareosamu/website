@@ -58,7 +58,7 @@ function calculateTokens() {
   const minutes = parseInt(time[1]); // Get the number of minutes
   const tokensEarned = minutes / 2; // Calculate the number of tokens earned
   const formattedTokens = tokensEarned.toFixed(2); // Format the number of tokens as a string with 2 decimal places
-  tokenCount.innerText = formattedTokens.toString() + " tokens earned"; // Update the tokenCount element with the number of tokens earned
+  tokenCount.innerText = formattedTokens.toString(); // Update the tokenCount element with the number of tokens earned
 }
 ////////////////////////////////////////////////////////////////TIMER
 function addTokens() {
