@@ -317,6 +317,7 @@ collectTokensBtn.onclick = function() {
         db.update({
           submit_count: submitCount + 1,
           last_submit_date: now
+          token: snapshot.child('token').val() - tokenCount
         });
       } else {
         alert('Error submitting token count.');
