@@ -258,6 +258,20 @@ setInterval(displayTokenCount, 1000);
 startTimer(addTokens); 
 }
 
+function collectTokens() {
+  const choice = prompt('Do you want to use your existing wallet address or provide a new one?\n\nType "existing" or "new".');
+  
+  if (choice === 'existing') {
+    // use existing wallet address
+    // perform the necessary operations here
+  } else if (choice === 'new') {
+    // provide new wallet address
+    // perform the necessary operations here
+  } else {
+    // handle invalid input
+    alert('Invalid choice. Please type "existing" or "new".');
+  }
+}
 
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
