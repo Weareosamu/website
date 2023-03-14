@@ -106,7 +106,14 @@ function startTimer(callback, interval = 60000) {
   }
 }
 
+function resetTimer() {
+  // Clear the localStorage value associated with TIMER_KEY
+  localStorage.removeItem(TIMER_KEY);
 
+  // Reset the timer element to its initial value
+  const timerElement = document.querySelector("#timer");
+  timerElement.textContent = "00:00:00";
+}
 
 
 // Define the displayTokenCount function
@@ -245,6 +252,7 @@ if (!isValidCryptoAddress(wallet)) {
 const stopTimer = startTimer();
 //setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
      // Call the displayTokenCount function every 1 minute
+  resetTimer();
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
 startTimer(addTokens); 
