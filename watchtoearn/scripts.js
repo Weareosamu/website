@@ -18,8 +18,7 @@ function displayTokenCount() {
   });
 }
 
-  // Call the displayTokenCount function every 1 minute
-//setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
+ 
 
 ////////////////////////////////////////////////////////////////TIMER
 function addTokens() {
@@ -50,6 +49,10 @@ function isValidCryptoAddress(address) {
 function submitHandler(event) {
   event.preventDefault();
 
+   // Call the displayTokenCount function every 1 minute
+setInterval(displayTokenCount, 6000); // 60000 milliseconds = 1 minute
+   // Call the displayTokenCount function every 1 minute
+setInterval(addTokens, 6000); // 60000 milliseconds = 1 minute
   // Get user's wallet and email input values
   const emailInput = document.querySelector("#email");
   const walletInput = document.querySelector("#wallet");
