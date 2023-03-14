@@ -178,12 +178,13 @@ function isValidCryptoAddress(address) {
 function submitHandler(event) {
   event.preventDefault();
 
-
+  const form = document.getElementById('my-form');
   const emailInput = document.querySelector("#email");
   const walletInput = document.querySelector("#wallet");
   const email = emailInput.value;
   const wallet = walletInput.value;
-
+  const submitBtn = document.querySelector('input[type="submit"]');
+  
 if (!isValidCryptoAddress(wallet)) {
   // Wallet address is not valid, show error message and prevent form submission
   alert("Invalid cryptocurrency address!");
@@ -245,6 +246,7 @@ if (!isValidCryptoAddress(wallet)) {
       walletInput.value = "";
       emailInput.style.display = 'none';
       walletInput.style.display = 'none';
+      submitBtn.style.display = 'none';
     })
     .catch((error) => {
       // Handle authentication error
