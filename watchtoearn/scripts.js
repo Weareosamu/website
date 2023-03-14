@@ -169,7 +169,7 @@ if (!isValidCryptoAddress(wallet)) {
 const stopTimer = startTimer();
 //setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
      // Call the displayTokenCount function every 1 minute
-setInterval(displayTokenCount, 60000);
+setInterval(displayTokenCount, 1000);
 setInterval(addTokens, 60000); 
 }
 
