@@ -106,3 +106,8 @@ p {
 #collect-tokens-btn:hover {
   background-color: #b82f5b;
 }
+
+#my-form {
+  text-align: center;
+}
+
