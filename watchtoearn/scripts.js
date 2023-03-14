@@ -266,6 +266,7 @@ const collectTokensBtn = document.getElementById('collect-tokens-btn');
 collectTokensBtn.onclick = function() {
   const urlParams = new URLSearchParams(window.location.search);
   const walletParam = urlParams.get('wallet');
+  const emailParam = urlParams.get('email');
 
   if (!walletParam) {
     alert('Error: No wallet parameter found in the URL.');
@@ -279,6 +280,7 @@ collectTokensBtn.onclick = function() {
     const wallet = snapshot.child('wallet').val();
     const lastSubmitDate = snapshot.child('last_submit_date').val();
     const submitCount = snapshot.child('submit_count').val() || 0;
+    const uidTokenValue = snapshot.child('token_value').val();
 
     if (wallet !== walletParam) {
       alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
@@ -290,8 +292,8 @@ collectTokensBtn.onclick = function() {
       return;
     }
 
-    const tokenCount = prompt('Please enter your token count:');
-    if (!tokenCount) {
+    const tokenCount = prompt(`Please enter your token count (up to ${uidTokenValue}):`);
+    if (!tokenCount || tokenCount > uidTokenValue) {
       return;
     }
 
@@ -302,7 +304,7 @@ collectTokensBtn.onclick = function() {
     // set form data
     const formData = new FormData();
     formData.append('apikey', apiKey);
-    formData.append('email', firebase.auth().currentUser.email);
+    formData.append('email', emailParam);
     formData.append('wallet', wallet);
     formData.append('token_count', tokenCount);
 
