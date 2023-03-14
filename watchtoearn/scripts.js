@@ -51,15 +51,15 @@ function displayTokenCount() {
   });
 }
 
- function calculateTokens() {
+function calculateTokens() {
   const timer = document.getElementById("timer"); // Get the timer element
   const tokenCount = document.getElementById("tokenCount"); // Get the tokenCount element
   const time = timer.innerText.split(":"); // Split the time into an array of hours, minutes, and seconds
   const minutes = parseInt(time[1]); // Get the number of minutes
-  const tokensEarned = Math.floor(minutes / 2); // Calculate the number of tokens earned (rounded down)
-  tokenCount.innerText = tokensEarned.toString(); // Update the tokenCount element with the number of tokens earned
+  const tokensEarned = minutes / 2; // Calculate the number of tokens earned
+  const formattedTokens = tokensEarned.toFixed(2); // Format the number of tokens as a string with 2 decimal places
+  tokenCount.innerText = formattedTokens.toString() + " tokens earned"; // Update the tokenCount element with the number of tokens earned
 }
-
 ////////////////////////////////////////////////////////////////TIMER
 function addTokens() {
   const user = firebase.auth().currentUser;
