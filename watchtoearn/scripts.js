@@ -39,7 +39,7 @@ function updateSubmitButtonText() {
 
 const TIMER_KEY = "my-timer";
 
-function startTimer() {
+function startTimer(callback, interval = 60000) {
   const timerElement = document.querySelector("#timer");
 
   // Get the previous timer value from localStorage
@@ -76,11 +76,15 @@ function startTimer() {
   // Start the timer and update the timer element every second
   let timerInterval = setInterval(updateTimer, 1000);
 
+  // Call the callback function every 'interval' milliseconds
+  let callbackInterval = setInterval(callback, interval);
+
   // Handle visibility changes
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "hidden") {
       // The page is hidden, save the timer state
       clearInterval(timerInterval);
+      clearInterval(callbackInterval);
       let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
       localStorage.setItem(TIMER_KEY, currentTime.toString());
     } else {
@@ -91,14 +95,17 @@ function startTimer() {
       minutes = Math.floor(elapsedTime / 60) % 60;
       hours = Math.floor(elapsedTime / (60 * 60));
       timerInterval = setInterval(updateTimer, 1000);
+      callbackInterval = setInterval(callback, interval);
     }
   });
 
-  // Return a function that stops the timer when called
+  // Return a function that stops the timer and callback intervals when called
   return function stopTimer() {
     clearInterval(timerInterval);
+    clearInterval(callbackInterval);
   }
 }
+
 
 
 
@@ -240,11 +247,8 @@ const stopTimer = startTimer();
      // Call the displayTokenCount function every 1 minute
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
-setInterval(addTokens, 60000); 
+startTimer(addTokens); 
 }
 
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
-
-
-
