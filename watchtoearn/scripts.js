@@ -260,16 +260,46 @@ startTimer(addTokens);
 
 const collectTokensBtn = document.getElementById('collect-tokens-btn');
 collectTokensBtn.onclick = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const walletParam = urlParams.get('wallet');
+  
+  if (!walletParam) {
+    alert('Error: No wallet parameter found in the URL.');
+    return;
+  }
+  
+  const uid = firebase.auth().currentUser.uid;
+  const db = firebase.firestore();
+  
   const choice = prompt('Do you want to use your existing wallet address or provide a new one?\n\nType "existing" or "new".');
   
   if (choice === 'existing') {
-    // use existing wallet address
-    // perform the necessary operations here
+    db.collection('users').doc(uid).get().then(function(doc) {
+      const wallet = doc.data().wallet;
+      if (wallet === walletParam) {
+        alert(`Your current wallet address is ${wallet}.`);
+      } else {
+        alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
+      }
+    }).catch(function(error) {
+      alert(`Error: ${error.message}`);
+    });
   } else if (choice === 'new') {
-    // provide new wallet address
-    // perform the necessary operations here
+    const oldWallet = prompt('Please enter your current wallet address:');
+    const email = prompt('Please enter your email address:');
+    const newWallet = prompt('Please enter your new wallet address:');
+    
+    db.collection('users').doc(uid).get().then(function(doc) {
+      const wallet = doc.data().wallet;
+      if (wallet === oldWallet) {
+        alert(`Your new wallet address (${newWallet}) has been saved.`);
+      } else {
+        alert('Error: The current wallet address you entered does not match your saved wallet address.');
+      }
+    }).catch(function(error) {
+      alert(`Error: ${error.message}`);
+    });
   } else {
-    // handle invalid input
     alert('Invalid choice. Please type "existing" or "new".');
   }
 }
