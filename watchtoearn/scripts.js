@@ -1,5 +1,6 @@
 const database = firebase.database();
 
+
 function updateSubmitButtonText() {
   // Get the value of the "wallet" parameter from the URL
   const urlParams = new URLSearchParams(window.location.search);
