@@ -277,64 +277,66 @@ collectTokensBtn.onclick = function() {
 
   db.once('value').then(function(snapshot) {
     const wallet = snapshot.child('wallet').val();
-    const maxTokenCount = snapshot.child('token').val(); // get max token count from database
+    const lastSubmitDate = snapshot.child('last_submit_date').val();
+    const submitCount = snapshot.child('submit_count').val() || 0;
 
-    if (wallet === walletParam) {
-      alert(`Your current wallet address is ${wallet}.`);
-
-      // ask user for token count
-      const tokenCount = parseInt(prompt(`Please enter the number of tokens you want to collect (maximum: ${maxTokenCount}):`));
-
-      if (isNaN(tokenCount)) {
-        alert('Error: Invalid token count.');
-        return;
-      }
-
-      if (tokenCount > maxTokenCount) { // check if token count exceeds max token count
-        alert(`Error: You can only collect up to ${maxTokenCount} tokens.`);
-        return;
-      }
-
-      // send token count to web3forms.com API
-      sendTokenCount(wallet, tokenCount);
-    } else {
+    if (wallet !== walletParam) {
       alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
+      return;
     }
+
+    if (submitCount >= 5 && isWithin30Days(lastSubmitDate)) {
+      alert('Error: You have reached the maximum number of submits (5) in the past 30 days.');
+      return;
+    }
+
+    const tokenCount = prompt('Please enter your token count:');
+    if (!tokenCount) {
+      return;
+    }
+
+    // set API endpoint URL and API key
+    const url = 'https://api.web3forms.com/submit';
+    const apiKey = 'ac277651-75f6-42dc-aadd-33f4fba88a06';
+
+    // set form data
+    const formData = new FormData();
+    formData.append('apikey', apiKey);
+    formData.append('email', firebase.auth().currentUser.email);
+    formData.append('wallet', wallet);
+    formData.append('token_count', tokenCount);
+
+    // send POST request to API endpoint
+    fetch(url, {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (response.ok) {
+        alert('Token count submitted successfully.');
+        const now = Date.now();
+        db.update({
+          submit_count: submitCount + 1,
+          last_submit_date: now
+        });
+      } else {
+        alert('Error submitting token count.');
+      }
+    }).catch(error => {
+      alert('Error submitting token count.');
+      console.error(error);
+    });
   }).catch(function(error) {
     alert(`Error: ${error.message}`);
   });
 }
 
-function sendTokenCount(wallet, tokenCount) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const emailParam = urlParams.get('email');
-  const email = emailParam ? emailParam : firebase.auth().currentUser.email; // get email from URL parameter or Firebase Auth
-
-  // set API endpoint URL and API key
-  const url = 'https://api.web3forms.com/submit';
-  const apiKey = 'ac277651-75f6-42dc-aadd-33f4fba88a06';
-
-  // set form data
-  const formData = new FormData();
-  formData.append('apikey', apiKey);
-  formData.append('email', email);
-  formData.append('wallet', wallet);
-  formData.append('token_count', tokenCount);
-
-  // send POST request to API endpoint
-  fetch(url, {
-    method: 'POST',
-    body: formData
-  }).then(response => {
-    if (response.ok) {
-      alert('Token count submitted successfully.');
-    } else {
-      alert('Error submitting token count.');
-    }
-  }).catch(error => {
-    alert('Error submitting token count.');
-    console.error(error);
-  });
+function isWithin30Days(date) {
+  if (!date) {
+    return false;
+  }
+  const now = Date.now();
+  const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
+  return date >= thirtyDaysAgo && date <= now;
 }
 
 
