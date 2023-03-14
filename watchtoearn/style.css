@@ -81,7 +81,7 @@ p {
   font-size: 24px;
 }
 
-.button {
+.button-logout {
   padding: 0.5rem 1rem;
   background-color: #ee3769;
   color: #fff;
@@ -90,7 +90,7 @@ p {
   cursor: pointer;
 }
 
-.button:hover {
+.button-logout:hover {
   background-color: #b82f5b;
 }
 
