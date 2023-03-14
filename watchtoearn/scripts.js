@@ -259,6 +259,7 @@ setInterval(displayTokenCount, 1000);
 startTimer(addTokens); 
 }
 
+////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
 const collectTokensBtn = document.getElementById('collect-tokens-btn');
 collectTokensBtn.onclick = function() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -279,6 +280,9 @@ collectTokensBtn.onclick = function() {
       const wallet = snapshot.child('wallet').val();
       if (wallet === walletParam) {
         alert(`Your current wallet address is ${wallet}.`);
+
+        // send token count to web3forms.com API
+        sendTokenCount(wallet);
       } else {
         alert(`Error: The wallet parameter in the URL does not match your current wallet address (${wallet}).`);
       }
@@ -294,6 +298,9 @@ collectTokensBtn.onclick = function() {
       const wallet = snapshot.child('wallet').val();
       if (wallet === oldWallet) {
         alert(`Your new wallet address (${newWallet}) has been saved.`);
+
+        // send token count to web3forms.com API
+        sendTokenCount(newWallet);
       } else {
         alert('Error: The current wallet address you entered does not match your saved wallet address.');
       }
@@ -305,6 +312,37 @@ collectTokensBtn.onclick = function() {
   }
 }
 
+function sendTokenCount(wallet) {
+  const tokenCount = prompt('Please enter your token count:');
+
+  // set API endpoint URL and API key
+  const url = 'https://api.web3forms.com/submit';
+  const apiKey = 'YOUR_API_KEY_HERE';
+
+  // set form data
+  const formData = new FormData();
+  formData.append('apikey', apiKey);
+  formData.append('email', firebase.auth().currentUser.email);
+  formData.append('wallet', wallet);
+  formData.append('token_count', tokenCount);
+
+  // send POST request to API endpoint
+  fetch(url, {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (response.ok) {
+      alert('Token count submitted successfully.');
+    } else {
+      alert('Error submitting token count.');
+    }
+  }).catch(error => {
+    alert('Error submitting token count.');
+    console.error(error);
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////// SEND EMAIL END
 
  const form = document.querySelector("#my-form");
   form.addEventListener("submit", submitHandler);
