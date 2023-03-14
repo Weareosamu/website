@@ -124,6 +124,11 @@ if (!isValidCryptoAddress(wallet)) {
       // Handle authentication error
       console.log("Authentication failed:", error.message);
     });
+  
+  // Example usage:
+const stopTimer = startTimer();
+setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
+  
 }
 
  const form = document.querySelector("#my-form");
@@ -162,7 +167,5 @@ function startTimer() {
     clearInterval(timerInterval);
   }
 }
-// Example usage:
-const stopTimer = startTimer();
-setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
+
 
