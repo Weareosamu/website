@@ -94,7 +94,7 @@ p {
   background-color: #b82f5b;
 }
 
-.collect-tokens-btn {
+#collect-tokens-btn {
   padding: 0.5rem 1rem;
   background-color: #ee3769;
   color: #fff;
@@ -103,6 +103,6 @@ p {
   cursor: pointer;
 }
 
-.collect-tokens-btn:hover {
+#collect-tokens-btn:hover {
   background-color: #b82f5b;
 }
