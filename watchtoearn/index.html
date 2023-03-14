@@ -32,7 +32,15 @@
 
 	<p><span id="timer">00:00:00</span></p>
 
-	<button id="collect-tokens-btn">Collect My Tokens</button>
+<button id="collect-tokens-btn" onclick="displayPopup()">Collect My Tokens</button>
+
+<div id="popup-container" class="popup-container">
+  <div class="popup-content">
+    <p>Do you want to use your existing wallet address or provide a new one?</p>
+    <button id="use-existing-btn" onclick="useExisting()">Use Existing</button>
+    <button id="provide-new-btn" onclick="provideNew()">Provide New</button>
+  </div>
+</div>
 
 	
 	<script type="module"> 
