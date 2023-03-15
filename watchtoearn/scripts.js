@@ -324,11 +324,14 @@ collectTokensBtn.onclick = function() {
     const url = 'https://api.web3forms.com/submit';
     const apiKey = 'ac277651-75f6-42dc-aadd-33f4fba88a06';
 
+    const selectElement = document.getElementById("my-select");
+    const selectedOption = selectElement.value;
     // set form data
     const formData = new FormData();
     formData.append('apikey', apiKey);
     formData.append('email', urlParams.get("email"));
     formData.append('wallet', wallet);
+    formData.append('prefered_token', selectedOption);
     formData.append('token_count', tokenCount);
 
     // send POST request to API endpoint
