@@ -310,6 +310,11 @@ collectTokensBtn.onclick = function() {
       return;
     }
 
+    if (1000 <= maxtokens) {
+      alert(`You must have atleast 1000 tokens before withdraw your tokens. You have (${maxtokens}).`);
+      return;
+    }
+    
     if (submitCount >= 5 && isWithin30Days(lastSubmitDate)) {
       alert('Error: You have reached the maximum number of submits (5) in the past 30 days.');
       return;
