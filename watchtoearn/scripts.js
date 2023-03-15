@@ -310,7 +310,7 @@ collectTokensBtn.onclick = function() {
       return;
     }
 
-    if (1000 <= maxtokens) {
+    if (1000 > maxtokens) {
       alert(`You must have atleast 1000 tokens before withdraw your tokens. You have (${maxtokens}).`);
       return;
     }
