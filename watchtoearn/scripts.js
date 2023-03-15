@@ -326,8 +326,9 @@ collectTokensBtn.onclick = function() {
     }
 
     // set API endpoint URL and API key
+    //ac277651-75f6-42dc-aadd-33f4fba88a06
     const url = 'https://api.web3forms.com/submit';
-    const apiKey = 'ac277651-75f6-42dc-aadd-33f4fba88a06';
+    const apiKey = '6f53a661-71f0-4baa-9559-a024452b1517';
 
     const selectElement = document.getElementById("my-select");
     const selectedOption = selectElement.value;
