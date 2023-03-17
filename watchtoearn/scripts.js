@@ -281,7 +281,7 @@ const stopTimer = startTimer();
   resetTimer();
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
-setInterval(addTokens, 60000);
+startTimer(addTokens);
 }
 
 ////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
