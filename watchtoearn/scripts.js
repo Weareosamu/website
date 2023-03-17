@@ -39,7 +39,7 @@ function updateSubmitButtonText() {
 
 ////////////////////////////////////////////////////////////////TIMER
 
-function startTimer(callback) {
+function startTimer() {
   const timerElement = document.querySelector("#timer");
 
   let elapsedTime = 0;
@@ -57,7 +57,7 @@ function startTimer(callback) {
         minutes = 0;
         hours++;
       }
-      callback(); // call the callback function when the seconds hit 60
+      addTokens(); // call the callback function when the seconds hit 60
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
   }
