@@ -1,5 +1,5 @@
 const database = firebase.database();
-
+var globalTokenCount = 0;
 
 function updateSubmitButtonText() {
   // Get the value of the "wallet" parameter from the URL
@@ -148,7 +148,9 @@ function calculateTokens() {
   const minutes = parseInt(time[1]); // Get the number of minutes
   const tokensEarned = minutes / 2; // Calculate the number of tokens earned
   const formattedTokens = tokensEarned.toFixed(2); // Format the number of tokens as a string with 2 decimal places
-  tokenCount.innerText = formattedTokens.toString(); // Update the tokenCount element with the number of tokens earned
+  //tokenCount.innerText = formattedTokens.toString(); // Update the tokenCount element with the number of tokens earned
+  tokenCount.innerText = globalTokenCount.toString();
+
 }
 
 
@@ -168,7 +170,8 @@ function addTokens() {
     console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
     return newTokenCount;
   });
-  
+
+  globalTokenCount += 0.5; 
   calculateTokens();
 }
 
