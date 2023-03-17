@@ -38,7 +38,7 @@ function updateSubmitButtonText() {
 
 ////////////////////////////////////////////////////////////////TIMER
 
-function startTimer(callback, interval = 60000) {
+function startTimer(callback) {
   const timerElement = document.querySelector("#timer");
 
   let elapsedTime = 0;
@@ -56,6 +56,7 @@ function startTimer(callback, interval = 60000) {
         minutes = 0;
         hours++;
       }
+      callback(); // call the callback function when the seconds hit 60
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
   }
@@ -68,20 +69,9 @@ function startTimer(callback, interval = 60000) {
   // Start the timer and update the timer element every second
   let timerInterval = setInterval(updateTimer, 1000);
 
-  // Call the callback function every 'interval' milliseconds when screen is on
-  let callbackInterval;
-  document.addEventListener("visibilitychange", function() {
-    if (document.visibilityState === "visible") {
-      callbackInterval = setInterval(callback, interval);
-    } else {
-      clearInterval(callbackInterval);
-    }
-  });
-
-  // Return a function that stops the timer and callback intervals when called
+  // Return a function that stops the timer when called
   return function stopTimer() {
     clearInterval(timerInterval);
-    clearInterval(callbackInterval);
   }
 }
 
@@ -110,8 +100,10 @@ function displayTokenCount() {
 }
 
 function calculateTokens() {
+  const tokenCount = document.getElementById("tokenCount"); // Get the tokenCount element
   tokenCount.innerText = globalTokenCount.toString();
 }
+
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
