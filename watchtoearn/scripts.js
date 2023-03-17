@@ -1,6 +1,5 @@
 const database = firebase.database();
 var globalTokenCount = 0;
-var mehet = 0;
 
 function updateSubmitButtonText() {
   // Get the value of the "wallet" parameter from the URL
@@ -37,77 +36,92 @@ function updateSubmitButtonText() {
   }
 }
 
-
-function addTokens() {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
-
-  const uid = user.uid;
-  const tokenRef = database.ref("users/" + uid + "/token");
-
-  tokenRef.transaction(function(currentTokenCount) {
-    const newTokenCount = (currentTokenCount || 0) + 0.5;
-    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
-    return newTokenCount;
-  });
-
-  globalTokenCount += 0.5; 
-  calculateTokens();
-}
-
-
-
 ////////////////////////////////////////////////////////////////TIMER
 
-function startTimer(callback) {
+const TIMER_KEY = "my-timer";
+
+function startTimer(callback, interval = 60000) {
   const timerElement = document.querySelector("#timer");
 
-  let elapsedTime = 0;
-  let seconds = 0;
-  let minutes = 0;
-  let hours = 0;
+  // Get the previous timer value from localStorage
+  let prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
+  let elapsedTime = prevTime;
 
-  
-  function update() {
+  let seconds = elapsedTime % 60;
+  let minutes = Math.floor(elapsedTime / 60) % 60;
+  let hours = Math.floor(elapsedTime / (60 * 60));
+
+  // Update the timer element with the current time
+  function updateTimer() {
     seconds++;
-    if (seconds >= 60 && mehet === 0) {
+    if (seconds >= 60) {
       seconds = 0;
       minutes++;
       if (minutes >= 60) {
         minutes = 0;
         hours++;
       }
-      callback(); // call the callback function when the seconds hit 60
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+
+    // Save the current timer value to localStorage
+    let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+    localStorage.setItem(TIMER_KEY, currentTime.toString());
   }
 
-  let timerInterval = setInterval(update, 1000);
-  
   // Pad a number with leading zeros if it is less than 10
   function padNumber(number) {
     return number < 10 ? `0${number}` : number;
   }
 
-   // Call the update function when the screen is visible
+  // Start the timer and update the timer element every second
+  let timerInterval = setInterval(updateTimer, 1000);
+
+  // Call the callback function every 'interval' milliseconds
+  let callbackInterval = setInterval(callback, interval);
+
+  // Handle visibility changes
   document.addEventListener("visibilitychange", function() {
-    if (document.visibilityState === "visible") {
-      mehet = 0;
-      // Return a function that stops the timer interval when called
-      return function stopTimer() {
-        mehet = 1;
-      }
+    if (document.visibilityState === "hidden") {
+      // The page is hidden, save the timer state
+      clearInterval(timerInterval);
+      clearInterval(callbackInterval);
+      let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+      localStorage.setItem(TIMER_KEY, currentTime.toString());
+    } else {
+      // The page is visible again, restore the timer state
+      prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
+      elapsedTime = prevTime;
+      seconds = elapsedTime % 60;
+      minutes = Math.floor(elapsedTime / 60) % 60;
+      hours = Math.floor(elapsedTime / (60 * 60));
+      timerInterval = setInterval(updateTimer, 1000);
+      callbackInterval = setInterval(callback, interval);
     }
   });
+
+  // Return a function that stops the timer and callback intervals when called
+  return function stopTimer() {
+    clearInterval(timerInterval);
+    clearInterval(callbackInterval);
+  }
 }
 
 function resetTimer() {
+  
+  // The page is hidden, save the timer state
+
+      let currentTime = 0;
+      localStorage.setItem(TIMER_KEY, currentTime.toString());
+  
+  // Clear the localStorage value associated with TIMER_KEY
+  localStorage.removeItem(TIMER_KEY);
+
   // Reset the timer element to its initial value
   const timerElement = document.querySelector("#timer");
   timerElement.textContent = "00:00:00";
 }
+
 
 // Define the displayTokenCount function
 function displayTokenCount() {
@@ -128,13 +142,39 @@ function displayTokenCount() {
 }
 
 function calculateTokens() {
+  const timer = document.getElementById("timer"); // Get the timer element
   const tokenCount = document.getElementById("tokenCount"); // Get the tokenCount element
+  const time = timer.innerText.split(":"); // Split the time into an array of hours, minutes, and seconds
+  const minutes = parseInt(time[1]); // Get the number of minutes
+  const tokensEarned = minutes / 2; // Calculate the number of tokens earned
+  const formattedTokens = tokensEarned.toFixed(2); // Format the number of tokens as a string with 2 decimal places
+  //tokenCount.innerText = formattedTokens.toString(); // Update the tokenCount element with the number of tokens earned
   tokenCount.innerText = globalTokenCount.toString();
+
 }
 
 
-
 ////////////////////////////////////////////////////////////////TIMEREND
+
+function addTokens() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+  const tokenRef = database.ref("users/" + uid + "/token");
+
+  tokenRef.transaction(function(currentTokenCount) {
+    const newTokenCount = (currentTokenCount || 0) + 0.5;
+    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
+    return newTokenCount;
+  });
+
+  globalTokenCount += 0.5; 
+  calculateTokens();
+}
+
 
 
 
@@ -250,7 +290,7 @@ const stopTimer = startTimer();
   resetTimer();
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
-startTimer(addTokens());
+startTimer(addTokens);
 }
 
 ////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
