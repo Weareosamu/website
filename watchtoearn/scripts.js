@@ -49,7 +49,7 @@ function startTimer(callback) {
   
   function update() {
     seconds++;
-    if (seconds >= 60 && mehet = 0) {
+    if (seconds >= 60 && mehet === 0) {
       seconds = 0;
       minutes++;
       if (minutes >= 60) {
