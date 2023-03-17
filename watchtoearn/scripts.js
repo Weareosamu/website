@@ -45,10 +45,11 @@ function startTimer(callback) {
   let seconds = 0;
   let minutes = 0;
   let hours = 0;
-
+  let mehet = 0;
+  
   function update() {
     seconds++;
-    if (seconds >= 60) {
+    if (seconds >= 60 && mehet = 0) {
       seconds = 0;
       minutes++;
       if (minutes >= 60) {
@@ -60,6 +61,8 @@ function startTimer(callback) {
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
   }
 
+  let timerInterval = setInterval(update, 1000);
+  
   // Pad a number with leading zeros if it is less than 10
   function padNumber(number) {
     return number < 10 ? `0${number}` : number;
@@ -68,10 +71,10 @@ function startTimer(callback) {
    // Call the update function when the screen is visible
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
-      let timerInterval = setInterval(update, 1000);
+      mehet = 0;
       // Return a function that stops the timer interval when called
       return function stopTimer() {
-        clearInterval(timerInterval);
+        mehet = 1;
       }
     }
   });
