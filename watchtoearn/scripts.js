@@ -40,7 +40,7 @@ function updateSubmitButtonText() {
 
 const TIMER_KEY = "my-timer";
 
-function startTimer(callback, interval = 60000) {
+function startTimer(callback) {
   const timerElement = document.querySelector("#timer");
 
   // Get the previous timer value from localStorage
@@ -61,6 +61,7 @@ function startTimer(callback, interval = 60000) {
         minutes = 0;
         hours++;
       }
+      callback();
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
 
@@ -78,14 +79,14 @@ function startTimer(callback, interval = 60000) {
   let timerInterval = setInterval(updateTimer, 1000);
 
   // Call the callback function every 'interval' milliseconds
-  let callbackInterval = setInterval(callback, interval);
+
 
   // Handle visibility changes
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "hidden") {
       // The page is hidden, save the timer state
       clearInterval(timerInterval);
-      clearInterval(callbackInterval);
+
       let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
       localStorage.setItem(TIMER_KEY, currentTime.toString());
     } else {
@@ -96,7 +97,7 @@ function startTimer(callback, interval = 60000) {
       minutes = Math.floor(elapsedTime / 60) % 60;
       hours = Math.floor(elapsedTime / (60 * 60));
       timerInterval = setInterval(updateTimer, 1000);
-      callbackInterval = setInterval(callback, interval);
+
     }
   });
 
