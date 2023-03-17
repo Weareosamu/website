@@ -65,9 +65,6 @@ function startTimer(callback) {
     return number < 10 ? `0${number}` : number;
   }
 
-  // Start the timer and update the timer element every second
-  let timerInterval = setInterval(updateTimer, 1000);
-
    // Call the update function when the screen is visible
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "visible") {
