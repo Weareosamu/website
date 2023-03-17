@@ -46,8 +46,9 @@ function startTimer(callback) {
   let minutes = 0;
   let hours = 0;
 
-  // Update the timer element with the current time
   function updateTimer() {
+    document.addEventListener("visibilitychange", function() {
+  if (document.visibilityState === "visible") {
     seconds++;
     if (seconds >= 60) {
       seconds = 0;
@@ -58,7 +59,10 @@ function startTimer(callback) {
       }
       callback(); // call the callback function when the seconds hit 60
     }
+
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+
+    });
   }
 
   // Pad a number with leading zeros if it is less than 10
