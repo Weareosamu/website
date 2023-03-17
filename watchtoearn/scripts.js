@@ -76,7 +76,7 @@ function startTimer() {
   }
 
   // Start the timer and update the timer element every second
-  let timerInterval = setInterval(updateTimer, 1000);
+ 
 
   // Call the callback function every 'interval' milliseconds
 
