@@ -104,7 +104,7 @@ function startTimer(callback) {
   // Return a function that stops the timer and callback intervals when called
   return function stopTimer() {
     clearInterval(timerInterval);
-    clearInterval(callbackInterval);
+    
   }
 }
 
