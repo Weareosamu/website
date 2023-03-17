@@ -39,7 +39,7 @@ function updateSubmitButtonText() {
 
 ////////////////////////////////////////////////////////////////TIMER
 
-function startTimer() {
+function startTimer(callback) {
   const timerElement = document.querySelector("#timer");
 
   let elapsedTime = 0;
@@ -57,7 +57,7 @@ function startTimer() {
         minutes = 0;
         hours++;
       }
-      addTokens(); // call the callback function when the seconds hit 60
+      callback(); // call the callback function when the seconds hit 60
     }
     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
   }
@@ -129,7 +129,7 @@ function addTokens() {
     return newTokenCount;
   });
 
-  globalTokenCount += 0.25; 
+  globalTokenCount += 0.5; 
   calculateTokens();
 }
 
@@ -248,7 +248,7 @@ const stopTimer = startTimer();
   resetTimer();
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
-startTimer();
+startTimer(addTokens());
 }
 
 ////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
