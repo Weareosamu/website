@@ -110,9 +110,8 @@ function startTimer(callback, interval = 60000) {
 function resetTimer() {
   
   // The page is hidden, save the timer state
-      clearInterval(timerInterval);
-      clearInterval(callbackInterval);
-      let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+
+      let currentTime = 0;
       localStorage.setItem(TIMER_KEY, currentTime.toString());
   
   // Clear the localStorage value associated with TIMER_KEY
