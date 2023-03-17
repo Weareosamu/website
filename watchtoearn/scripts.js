@@ -39,7 +39,6 @@ function updateSubmitButtonText() {
 ////////////////////////////////////////////////////////////////TIMER
 
 const TIMER_KEY = "my-timer";
-const MAX_INACTIVE_TIME = 300000; // 5 minutes in milliseconds
 
 function startTimer(callback, interval = 60000) {
   const timerElement = document.querySelector("#timer");
@@ -82,17 +81,15 @@ function startTimer(callback, interval = 60000) {
   let callbackInterval = setInterval(callback, interval);
 
   // Handle visibility changes
-  let inactivityTimer = null;
   document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === "hidden") {
-      // The page is hidden, stop the timer and callback intervals
+      // The page is hidden, save the timer state
       clearInterval(timerInterval);
       clearInterval(callbackInterval);
-      clearTimeout(inactivityTimer);
       let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
       localStorage.setItem(TIMER_KEY, currentTime.toString());
     } else {
-      // The page is visible again, restore the timer state and start the timer and callback intervals
+      // The page is visible again, restore the timer state
       prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
       elapsedTime = prevTime;
       seconds = elapsedTime % 60;
@@ -100,43 +97,14 @@ function startTimer(callback, interval = 60000) {
       hours = Math.floor(elapsedTime / (60 * 60));
       timerInterval = setInterval(updateTimer, 1000);
       callbackInterval = setInterval(callback, interval);
-
-      // Check for inactivity and stop the timer and callback intervals if there is no action for a long time
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(function() {
-        clearInterval(timerInterval);
-        clearInterval(callbackInterval);
-        let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
-        localStorage.setItem(TIMER_KEY, currentTime.toString());
-      }, MAX_INACTIVE_TIME);
     }
   });
 
-  // Check for inactivity and stop the timer and callback intervals if there is no action for a long time
-  let lastActionTime = Date.now();
-  function checkInactivity() {
-    const currentTime = Date.now();
-    const elapsedInactiveTime = currentTime - lastActionTime;
-    if (elapsedInactiveTime >= MAX_INACTIVE_TIME) {
-      clearInterval(timerInterval);
-      clearInterval(callbackInterval);
-      let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
-localStorage.setItem(TIMER_KEY, currentTime.toString());
-}
-}
-
-// Add event listeners to track user activity and reset the inactivity timer
-document.addEventListener("mousemove", function() {
-lastActionTime = Date.now();
-clearTimeout(inactivityTimer);
-inactivityTimer = setTimeout(checkInactivity, MAX_INACTIVE_TIME);
-});
-
-document.addEventListener("keydown", function() {
-lastActionTime = Date.now();
-clearTimeout(inactivityTimer);
-inactivityTimer = setTimeout(checkInactivity, MAX_INACTIVE_TIME);
-});
+  // Return a function that stops the timer and callback intervals when called
+  return function stopTimer() {
+    clearInterval(timerInterval);
+    clearInterval(callbackInterval);
+  }
 }
 
 function resetTimer() {
@@ -147,6 +115,36 @@ function resetTimer() {
   const timerElement = document.querySelector("#timer");
   timerElement.textContent = "00:00:00";
 }
+
+
+// Define the displayTokenCount function
+function displayTokenCount() {
+  // Get the user ID from the Firebase Authentication object
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+
+  const tokenRef = database.ref("users/" + uid + "/token");
+  tokenRef.on("value", function (snapshot) {
+    const tokenCount = snapshot.val() || 0;
+    const countElement = document.querySelector("#tokenDisplay .count");
+    countElement.textContent = tokenCount;
+  });
+}
+
+function calculateTokens() {
+  const timer = document.getElementById("timer"); // Get the timer element
+  const tokenCount = document.getElementById("tokenCount"); // Get the tokenCount element
+  const time = timer.innerText.split(":"); // Split the time into an array of hours, minutes, and seconds
+  const minutes = parseInt(time[1]); // Get the number of minutes
+  const tokensEarned = minutes / 2; // Calculate the number of tokens earned
+  const formattedTokens = tokensEarned.toFixed(2); // Format the number of tokens as a string with 2 decimal places
+  tokenCount.innerText = formattedTokens.toString(); // Update the tokenCount element with the number of tokens earned
+}
+
 
 ////////////////////////////////////////////////////////////////TIMEREND
 
@@ -280,10 +278,10 @@ form.appendChild(walletDisplay);
 const stopTimer = startTimer();
 //setTimeout(stopTimer, 10000); // Stop the timer after 10 seconds
      // Call the displayTokenCount function every 1 minute
-
+  resetTimer();
 updateSubmitButtonText();
 setInterval(displayTokenCount, 1000);
-  startTimer(addTokens, 60000);
+setInterval(addTokens, 60000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////// SEND EMAIL
