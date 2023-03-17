@@ -37,6 +37,28 @@ function updateSubmitButtonText() {
   }
 }
 
+
+function addTokens() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    return;
+  }
+
+  const uid = user.uid;
+  const tokenRef = database.ref("users/" + uid + "/token");
+
+  tokenRef.transaction(function(currentTokenCount) {
+    const newTokenCount = (currentTokenCount || 0) + 0.5;
+    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
+    return newTokenCount;
+  });
+
+  globalTokenCount += 0.5; 
+  calculateTokens();
+}
+
+
+
 ////////////////////////////////////////////////////////////////TIMER
 
 function startTimer(callback) {
@@ -113,26 +135,6 @@ function calculateTokens() {
 
 
 ////////////////////////////////////////////////////////////////TIMEREND
-
-function addTokens() {
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    return;
-  }
-
-  const uid = user.uid;
-  const tokenRef = database.ref("users/" + uid + "/token");
-
-  tokenRef.transaction(function(currentTokenCount) {
-    const newTokenCount = (currentTokenCount || 0) + 0.5;
-    console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
-    return newTokenCount;
-  });
-
-  globalTokenCount += 0.5; 
-  calculateTokens();
-}
-
 
 
 
