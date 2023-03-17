@@ -1,5 +1,6 @@
 const database = firebase.database();
 var globalTokenCount = 0;
+var mehet = 0;
 
 function updateSubmitButtonText() {
   // Get the value of the "wallet" parameter from the URL
@@ -45,7 +46,7 @@ function startTimer(callback) {
   let seconds = 0;
   let minutes = 0;
   let hours = 0;
-  let mehet = 0;
+
   
   function update() {
     seconds++;
