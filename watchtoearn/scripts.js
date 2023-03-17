@@ -129,7 +129,7 @@ function addTokens() {
     return newTokenCount;
   });
 
-  globalTokenCount += 0.5; 
+  globalTokenCount += 1; 
   calculateTokens();
 }
 
