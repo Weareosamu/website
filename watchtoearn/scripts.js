@@ -60,39 +60,53 @@ function startTimer() {
 
   // Update the timer element with the current time
   function updateTimer() {
+  // Check if the device is a mobile device
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    // Add the devicemotion event listener
     window.addEventListener('devicemotion', function(event) {
-  var acceleration = event.accelerationIncludingGravity;
-  var x = acceleration.x;
-  var y = acceleration.y;
-  var z = acceleration.z;
+      var acceleration = event.accelerationIncludingGravity;
+      var x = acceleration.x;
+      var y = acceleration.y;
+      var z = acceleration.z;
       var accelerationTotal = Math.sqrt(x*x + y*y + z*z);
       if (accelerationTotal < 0.1) {
-    if(isScreenOn){
-    seconds++;
-    if (seconds >= 60) {
-      seconds = 0;
-      minutes++;
-      if (minutes >= 60) {
-        minutes = 0;
-        hours++;
+        if(isScreenOn){
+          seconds++;
+          if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes >= 60) {
+              minutes = 0;
+              hours++;
+            }
+            addTokens();
+          }
+          timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+          // Save the current timer value to localStorage
+          //let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+          //localStorage.setItem(TIMER_KEY, currentTime.toString());
+        }
+        console.log('Device is stationary, screen may be off');
+      }else {
+        console.log('Device is moving, screen is likely on');
       }
-     addTokens();
-    
-    }
-    timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    });
+  } else {
+    // Use a fallback method for non-mobile devices
+    // ...
+    seconds++;
+          if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes >= 60) {
+              minutes = 0;
+              hours++;
+            }
+            addTokens();
+          }
+  }
+}
 
-    // Save the current timer value to localStorage
-    //let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
-    //localStorage.setItem(TIMER_KEY, currentTime.toString());
-    }
-           console.log('Device is stationary, screen may be off');
-  }else {
-    console.log('Device is moving, screen is likely on');
-  }
-}); 
-        
-        
-  }
   
  setInterval(updateTimer, 1000);
   // Pad a number with leading zeros if it is less than 10
