@@ -82,6 +82,7 @@ function startTimer() {
     //localStorage.setItem(TIMER_KEY, currentTime.toString());
     }
   }
+  
  setInterval(updateTimer, 1000);
   // Pad a number with leading zeros if it is less than 10
   function padNumber(number) {
