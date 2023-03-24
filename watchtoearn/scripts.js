@@ -121,7 +121,7 @@ function startTimer() {
 }
 
 function resetTimer() {
-  
+  /*
   // The page is hidden, save the timer state
 
       let currentTime = 0;
@@ -129,7 +129,7 @@ function resetTimer() {
   
   // Clear the localStorage value associated with TIMER_KEY
   localStorage.removeItem(TIMER_KEY);
-
+*/
   // Reset the timer element to its initial value
   const timerElement = document.querySelector("#timer");
   timerElement.textContent = "00:00:00";
