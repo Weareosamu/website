@@ -70,9 +70,9 @@ function startTimer() {
         hours++;
       }
      addTokens();
-     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
-    }
     
+    }
+    timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
 
     // Save the current timer value to localStorage
     //let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
