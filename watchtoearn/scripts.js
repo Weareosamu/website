@@ -71,9 +71,6 @@ function startTimer() {
       }
      addTokens();
      timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
-    }else
-    {
-    clearInterval(timerInterval);
     }
     
 
