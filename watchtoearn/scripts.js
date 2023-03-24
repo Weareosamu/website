@@ -203,7 +203,7 @@ function addTokens() {
   const tokenRef = database.ref("users/" + uid + "/token");
 
   tokenRef.transaction(function(currentTokenCount) {
-    const newTokenCount = (currentTokenCount || 0) + 0.5;
+    const newTokenCount = (currentTokenCount || 0) + 0.25;
     console.log(`Updating token count to ${newTokenCount} at ${new Date().toLocaleString()}`);
     return newTokenCount;
   });
