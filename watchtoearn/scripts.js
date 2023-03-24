@@ -60,6 +60,13 @@ function startTimer() {
 
   // Update the timer element with the current time
   function updateTimer() {
+    window.addEventListener('devicemotion', function(event) {
+  var acceleration = event.accelerationIncludingGravity;
+  var x = acceleration.x;
+  var y = acceleration.y;
+  var z = acceleration.z;
+      var accelerationTotal = Math.sqrt(x*x + y*y + z*z);
+      if (accelerationTotal < 0.1) {
     if(isScreenOn){
     seconds++;
     if (seconds >= 60) {
@@ -78,6 +85,13 @@ function startTimer() {
     //let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
     //localStorage.setItem(TIMER_KEY, currentTime.toString());
     }
+           console.log('Device is stationary, screen may be off');
+  }else {
+    console.log('Device is moving, screen is likely on');
+  }
+}); 
+        
+        
   }
   
  setInterval(updateTimer, 1000);
