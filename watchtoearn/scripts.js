@@ -89,7 +89,7 @@ function startTimer() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////SCREEN IS ON?
   // Handle visibility changes
-  document.addEventListener("visibilitychange", function() {
+  document.addEventListener("visibilitychange", function() {});
     //if (document.visibilityState === "hidden") 
     if(!isScreenOn){
       // The page is hidden, save the timer state
@@ -107,7 +107,7 @@ function startTimer() {
       timerInterval = setInterval(updateTimer, 1000);
 
     }
-  });
+  
 
   // Return a function that stops the timer and callback intervals when called
   return function stopTimer() {
