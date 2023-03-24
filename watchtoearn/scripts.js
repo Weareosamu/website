@@ -91,7 +91,7 @@ function startTimer() {
   // Handle visibility changes
   document.addEventListener("visibilitychange", function() {
     //if (document.visibilityState === "hidden") 
-    if(isScreenOn){
+    if(!isScreenOn){
       // The page is hidden, save the timer state
       clearInterval(timerInterval);
 
