@@ -51,12 +51,12 @@ function startTimer() {
   const timerElement = document.querySelector("#timer");
 
   // Get the previous timer value from localStorage
-  let prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
-  let elapsedTime = prevTime;
+  //let prevTime = parseInt(localStorage.getItem(TIMER_KEY)) || 0;
+  //let elapsedTime = prevTime;
 
-  let seconds = elapsedTime % 60;
-  let minutes = Math.floor(elapsedTime / 60) % 60;
-  let hours = Math.floor(elapsedTime / (60 * 60));
+  //let seconds = elapsedTime % 60;
+  //let minutes = Math.floor(elapsedTime / 60) % 60;
+  //let hours = Math.floor(elapsedTime / (60 * 60));
 
   // Update the timer element with the current time
   function updateTimer() {
