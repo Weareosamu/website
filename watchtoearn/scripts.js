@@ -37,6 +37,13 @@ function updateSubmitButtonText() {
 }
 
 ////////////////////////////////////////////////////////////////TIMER
+let isScreenOn = true;
+
+function checkScreen() {
+  // Check if the screen is on
+  isScreenOn = !document.hidden && !document.msHidden && !document.webkitHidden;
+  window.requestAnimationFrame(checkScreen);
+}
 
 const TIMER_KEY = "my-timer";
 
@@ -80,10 +87,11 @@ function startTimer() {
 
   // Call the callback function every 'interval' milliseconds
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////SCREEN IS ON?
   // Handle visibility changes
   document.addEventListener("visibilitychange", function() {
-    if (document.visibilityState === "hidden") {
+    //if (document.visibilityState === "hidden") 
+    if(isScreenOn){
       // The page is hidden, save the timer state
       clearInterval(timerInterval);
 
