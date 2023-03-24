@@ -60,6 +60,7 @@ function startTimer() {
 
   // Update the timer element with the current time
   function updateTimer() {
+    if(isScreenOn){
     seconds++;
     if (seconds >= 60) {
       seconds = 0;
@@ -75,6 +76,7 @@ function startTimer() {
     // Save the current timer value to localStorage
     let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
     localStorage.setItem(TIMER_KEY, currentTime.toString());
+    }
   }
 
   // Pad a number with leading zeros if it is less than 10
@@ -91,7 +93,7 @@ function startTimer() {
   // Handle visibility changes
   document.addEventListener("visibilitychange", function() {});
     //if (document.visibilityState === "hidden") 
-    if(!isScreenOn){
+  /*  if(!isScreenOn){
       // The page is hidden, save the timer state
       clearInterval(timerInterval);
 
@@ -107,7 +109,7 @@ function startTimer() {
       timerInterval = setInterval(updateTimer, 1000);
 
     }
-  
+  */
 
   // Return a function that stops the timer and callback intervals when called
   return function stopTimer() {
