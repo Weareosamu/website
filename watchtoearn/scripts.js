@@ -38,7 +38,7 @@ function updateSubmitButtonText() {
 
 ////////////////////////////////////////////////////////////////TIMER
 let isScreenOn = true;
-
+let timerInterval = setInterval(updateTimer, 1000);
 function checkScreen() {
   // Check if the screen is on
   isScreenOn = !document.hidden && !document.msHidden && !document.webkitHidden;
@@ -70,12 +70,16 @@ function startTimer() {
         hours++;
       }
      addTokens();
+     timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    }else
+    {
+    clearInterval(timerInterval);
     }
-    timerElement.textContent = `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
+    
 
     // Save the current timer value to localStorage
-    let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
-    localStorage.setItem(TIMER_KEY, currentTime.toString());
+    //let currentTime = hours * 60 * 60 + minutes * 60 + seconds;
+    //localStorage.setItem(TIMER_KEY, currentTime.toString());
     }
   }
 
@@ -85,13 +89,13 @@ function startTimer() {
   }
 
   // Start the timer and update the timer element every second
- let timerInterval = setInterval(updateTimer, 1000);
+ //let timerInterval = setInterval(updateTimer, 1000);
 
   // Call the callback function every 'interval' milliseconds
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////SCREEN IS ON?
   // Handle visibility changes
-  document.addEventListener("visibilitychange", function() {});
+  //document.addEventListener("visibilitychange", function() {});
     //if (document.visibilityState === "hidden") 
   /*  if(!isScreenOn){
       // The page is hidden, save the timer state
