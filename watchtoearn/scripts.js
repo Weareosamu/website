@@ -430,24 +430,5 @@ function isWithin30Days(date) {
 
 ////////////////////////////////////////////////// YOUTUBE VIDEO
 
-function onYouTubeIframeAPIReady() {
-        var player = new YT.Player('player', {
-          height: '720',
-          width: '1280',
-          videoId: 'VznoKyh6AXs',
-          playerVars: {
-            autoplay: 1,    // Autoplay the video
-            controls: 0,    // Disable video controls
-          },
-          events: {
-            onReady: onPlayerReady
-          }
-        });
-      }
-
-      function onPlayerReady(event) {
-        event.target.playVideo(); // Start playing the video
-      }
-
 
 
