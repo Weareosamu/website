@@ -26,13 +26,15 @@
 	<div id="player"></div>
 	
 	<script>
+      var player;
+
       function onYouTubeIframeAPIReady() {
-        var player = new YT.Player('player', {
+        player = new YT.Player('player', {
           height: '720',
           width: '1280',
           videoId: 'VznoKyh6AXs',
           playerVars: {
-            autoplay: 0,    // Autoplay the video
+            autoplay: 1,    // Autoplay the video
             controls: 0,    // Disable video controls
           },
           events: {
