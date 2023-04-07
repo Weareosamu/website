@@ -25,14 +25,24 @@
 	
 	<div id="player"></div>
 	
-	<script>
-      var player;
+<script>
+  var player;
 
-      function onYouTubeIframeAPIReady() {
+  function onYouTubeIframeAPIReady() {
+    // Load the JSON file with the video IDs
+    fetch('vidlist.json')
+      .then(response => response.json())
+      .then(data => {
+        // Get a random video ID from the videoIds array
+        var videoIds = data.videoIds;
+        var randomIndex = Math.floor(Math.random() * videoIds.length);
+        var randomVideoId = videoIds[randomIndex];
+
+        // Create the YouTube player with the random video ID
         player = new YT.Player('player', {
           height: '720',
           width: '1280',
-          videoId: 'VznoKyh6AXs',
+          videoId: randomVideoId, // Use the random video ID
           playerVars: {
             autoplay: 1,    // Autoplay the video
             controls: 0,    // Disable video controls
@@ -41,12 +51,14 @@
             onReady: onPlayerReady
           }
         });
-      }
+      })
+      .catch(error => console.error('Error loading vidlist.json:', error));
+  }
 
-      function onPlayerReady(event) {
-        event.target.playVideo(); // Start playing the video
-      }
-    </script>
+  function onPlayerReady(event) {
+    event.target.playVideo(); // Start playing the video
+  }
+</script>
 	
 	
 	<form id="my-form">
