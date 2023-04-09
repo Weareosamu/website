@@ -1,0 +1,28 @@
+{
+  "status": "1",
+  "message": "OK",
+  "result": [
+    {
+      "blockNumber": "16670636",
+      "timeStamp": "1678534007",
+      "hash": "0x17534f9ccbc9af61fa4b2a54b9228efb80b44f83d738fb638236ae17bd001317",
+      "nonce": "5",
+      "blockHash": "0x14b34d282c51382eaa630503fa45dee68decd96a8e1af95599b1c963efc053ee",
+      "transactionIndex": "66",
+      "from": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      "to": "0x9c9400f515b3df9e9748c438e478e96332252c58",
+      "value": "540000000000000", // updated value in wei (0.00054 ETH)
+      "gas": "21000",
+      "gasPrice": "45371352360",
+      "isError": "0",
+      "txreceipt_status": "1",
+      "input": "0x",
+      "contractAddress": "",
+      "cumulativeGasUsed": "5350191",
+      "gasUsed": "21000",
+      "confirmations": "339666",
+      "methodId": "0x",
+      "functionName": ""
+    }
+  ]
+}
